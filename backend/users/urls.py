@@ -1,5 +1,5 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from .views import (
     CurrentUserView,
     RegisterView,
@@ -8,8 +8,7 @@ from .views import (
     PasswordResetConfirmView,
     UserViewSet,
 )
-
-router = DefaultRouter()
+router = SimpleRouter()
 router.register(r'users', UserViewSet, basename='user')
 
 urlpatterns = [

@@ -67,7 +67,7 @@ export default function Inventory() {
       await deleteInventoryItem(id);
       loadItems();
     } catch {
-      alert('Failed to delete record.');
+      alert('Failed to delete inventory record.');
     }
   };
 
@@ -89,14 +89,14 @@ export default function Inventory() {
         <h1 className="text-2xl font-bold">Inventory</h1>
         {canEdit && (
           <button onClick={handleCreate} className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded text-sm font-semibold transition">
-            + Add Inventory Record
+            + Add Record
           </button>
         )}
       </div>
 
       <input
         type="text"
-        placeholder="Search by product or shelf..."
+        placeholder="Search inventory..."
         value={search}
         onChange={(e) => { setSearch(e.target.value); setPage(1); }}
         className="w-full max-w-md mb-4 px-3 py-2 rounded bg-slate-800 text-white border border-slate-600 focus:outline-none focus:border-emerald-400"
@@ -108,10 +108,10 @@ export default function Inventory() {
         <table className="w-full text-sm">
           <thead className="bg-slate-800 text-slate-300">
             <tr>
+              <th className="text-left px-4 py-3">ID</th>
               <th className="text-left px-4 py-3">Product</th>
               <th className="text-left px-4 py-3">Shelf</th>
               <th className="text-left px-4 py-3">Quantity</th>
-              <th className="text-left px-4 py-3">Last Updated</th>
               {canEdit && <th className="text-left px-4 py-3">Actions</th>}
             </tr>
           </thead>
@@ -123,10 +123,10 @@ export default function Inventory() {
             ) : (
               items.map((item) => (
                 <tr key={item.id} className="border-t border-slate-700 hover:bg-slate-800/50">
+                  <td className="px-4 py-3">{item.id}</td>
                   <td className="px-4 py-3">{productName(item.product)}</td>
                   <td className="px-4 py-3">{shelfCode(item.shelf)}</td>
                   <td className="px-4 py-3">{item.quantity}</td>
-                  <td className="px-4 py-3">{new Date(item.last_updated).toLocaleString()}</td>
                   {canEdit && (
                     <td className="px-4 py-3 space-x-2">
                       <button onClick={() => handleEdit(item)} className="text-emerald-400 hover:underline">Edit</button>
@@ -151,6 +151,8 @@ export default function Inventory() {
       {showModal && (
         <InventoryFormModal
           item={editingItem}
+          products={products}
+          shelves={shelves}
           onClose={() => setShowModal(false)}
           onSubmit={handleSubmit}
         />

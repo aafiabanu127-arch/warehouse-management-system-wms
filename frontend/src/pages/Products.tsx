@@ -23,7 +23,7 @@ export default function Products() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    getCategories().then((data) => setCategories(data.results)).catch(() => {});
+    getCategories({ page: 1 }).then((data) => setCategories(data.results)).catch(() => {});
   }, []);
 
   const categoryName = (id: number) =>
@@ -149,6 +149,7 @@ export default function Products() {
       {showModal && (
         <ProductFormModal
           product={editingProduct}
+          categories={categories}
           onClose={() => setShowModal(false)}
           onSubmit={handleSubmit}
         />

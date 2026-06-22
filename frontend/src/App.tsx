@@ -17,6 +17,9 @@ import Analytics from './pages/Analytics';
 import Approvals from './pages/Approvals';
 import Notifications from './pages/Notifications';
 import UserManagement from './pages/UserManagement';
+import Zones from './pages/Zones';
+import Racks from './pages/Racks';
+import Shelves from './pages/Shelves';
 
 
 function App() {
@@ -98,6 +101,27 @@ function App() {
             element={<ProtectedRoute><Layout /></ProtectedRoute>}
           >
             <Route index element={<UserManagement />} />
+          </Route>
+
+          <Route
+            path="/zones"
+            element={<ProtectedRoute><Layout /></ProtectedRoute>}
+          >
+            <Route index element={<Zones />} />
+          </Route>
+
+          <Route
+            path="/racks"
+            element={<ProtectedRoute><Layout /></ProtectedRoute>}
+          >
+            <Route index element={<Racks />} />
+          </Route>
+
+          <Route
+            path="/shelves"
+            element={<ProtectedRoute><Layout /></ProtectedRoute>}
+          >
+            <Route index element={<Shelves />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

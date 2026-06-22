@@ -6,6 +6,9 @@ import apiClient from '../api/client';
 const navItems = [
   { to: '/dashboard', label: '📊 Dashboard' },
   { to: '/warehouses', label: '🏭 Warehouses' },
+  { to: '/zones', label: '🗺️ Zones' },
+  { to: '/racks', label: '🗄️ Racks' },
+  { to: '/shelves', label: '📚 Shelves' },
   { to: '/inventory', label: '📦 Inventory' },
   { to: '/products', label: '🛒 Products' },
   { to: '/categories', label: '🗂️ Categories' },
@@ -31,6 +34,9 @@ interface SearchResult {
 const allSearchItems: SearchResult[] = [
   { label: '📊 Dashboard', to: '/dashboard' },
   { label: '🏭 Warehouses', to: '/warehouses' },
+  { label: '🗺️ Zones', to: '/zones' },
+  { label: '🗄️ Racks', to: '/racks' },
+  { label: '📚 Shelves', to: '/shelves' },
   { label: '📦 Inventory', to: '/inventory' },
   { label: '🛒 Products', to: '/products' },
   { label: '🗂️ Categories', to: '/categories' },

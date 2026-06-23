@@ -15,6 +15,7 @@ export default function ProductFormModal({ product, categories, onClose, onSubmi
   const [description, setDescription] = useState('');
   const [unitVolume, setUnitVolume] = useState(0);
   const [unitWeight, setUnitWeight] = useState(0);
+  const [unitPrice, setUnitPrice] = useState(0);
   const [category, setCategory] = useState<number | ''>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -26,6 +27,7 @@ export default function ProductFormModal({ product, categories, onClose, onSubmi
       setDescription(product.description);
       setUnitVolume(product.unit_volume);
       setUnitWeight(product.unit_weight);
+      setUnitPrice(product.unit_price ?? 0);
       setCategory(product.category);
     } else {
       setName('');
@@ -33,6 +35,7 @@ export default function ProductFormModal({ product, categories, onClose, onSubmi
       setDescription('');
       setUnitVolume(0);
       setUnitWeight(0);
+      setUnitPrice(0);
       setCategory('');
     }
   }, [product]);
@@ -52,6 +55,7 @@ export default function ProductFormModal({ product, categories, onClose, onSubmi
         description,
         unit_volume: unitVolume,
         unit_weight: unitWeight,
+        unit_price: unitPrice,
         category: category as number,
       });
     } catch {
@@ -97,6 +101,10 @@ export default function ProductFormModal({ product, categories, onClose, onSubmi
               <label htmlFor="product-unit-weight" className="block text-sm text-slate-300 mb-1">Unit Weight</label>
               <input id="product-unit-weight" type="number" step="0.01" value={unitWeight} onChange={(e) => setUnitWeight(Number(e.target.value))} className="w-full px-3 py-2 rounded bg-slate-700 text-white border border-slate-600 focus:outline-none focus:border-emerald-400" required />
             </div>
+          </div>
+          <div>
+            <label htmlFor="product-unit-price" className="block text-sm text-slate-300 mb-1">Unit Price ($)</label>
+            <input id="product-unit-price" type="number" step="0.01" min="0" value={unitPrice} onChange={(e) => setUnitPrice(Number(e.target.value))} className="w-full px-3 py-2 rounded bg-slate-700 text-white border border-slate-600 focus:outline-none focus:border-emerald-400" required />
           </div>
           <div>
             <label htmlFor="product-description" className="block text-sm text-slate-300 mb-1">Description</label>

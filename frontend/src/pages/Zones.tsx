@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { usePermissions } from '../hooks/usePermissions';
 import { getZones, createZone, updateZone, deleteZone } from '../api/zones';
 import type { Zone } from '../api/zones';
 
 const PAGE_SIZE = 20;
 
 export default function Zones() {
-  const { user } = useAuth();
-  const canEdit = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+  const { canEditZones, canDeleteAny } = usePermissions();
 
   const [zones, setZones] = useState<Zone[]>([]);
   const [count, setCount] = useState(0);
@@ -86,7 +85,7 @@ export default function Zones() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Zones</h1>
-        {canEdit && (
+        {canEditZones && (
           <button onClick={openCreate} className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded text-sm font-semibold transition">
             + Add Zone
           </button>
@@ -111,7 +110,7 @@ export default function Zones() {
               <th className="text-left px-4 py-3">Name</th>
               <th className="text-left px-4 py-3">Capacity</th>
               <th className="text-left px-4 py-3">Warehouse ID</th>
-              {canEdit && <th className="text-left px-4 py-3">Actions</th>}
+              {canEditZones && <th className="text-left px-4 py-3">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -125,10 +124,12 @@ export default function Zones() {
                 <td className="px-4 py-3">{z.name}</td>
                 <td className="px-4 py-3">{z.capacity}</td>
                 <td className="px-4 py-3">{z.warehouse}</td>
-                {canEdit && (
+                {canEditZones && (
                   <td className="px-4 py-3 space-x-2">
                     <button onClick={() => openEdit(z)} className="text-emerald-400 hover:underline">Edit</button>
-                    <button onClick={() => handleDelete(z.id)} className="text-red-400 hover:underline">Delete</button>
+                    {canDeleteAny && (
+                        <button onClick={() => handleDelete(z.id)} className="text-red-400 hover:underline">Delete</button>
+                      )}
                   </td>
                 )}
               </tr>

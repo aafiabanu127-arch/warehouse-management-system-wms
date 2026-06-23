@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { usePermissions } from '../hooks/usePermissions';
 import { getCategories, createCategory, updateCategory, deleteCategory } from '../api/categories';
 import type { Category } from '../types/category';
 import CategoryFormModal from '../components/CategoryFormModal';
@@ -7,8 +7,7 @@ import CategoryFormModal from '../components/CategoryFormModal';
 const PAGE_SIZE = 20;
 
 export default function Categories() {
-  const { user } = useAuth();
-  const canEdit = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+  const { canEditCategories, canDeleteAny } = usePermissions();
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [count, setCount] = useState(0);
@@ -73,7 +72,7 @@ export default function Categories() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Categories</h1>
-        {canEdit && (
+        {canEditCategories && (
           <button
             onClick={handleCreate}
             className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded text-sm font-semibold transition"
@@ -102,7 +101,7 @@ export default function Categories() {
             <tr>
               <th className="text-left px-4 py-3">Name</th>
               <th className="text-left px-4 py-3">Description</th>
-              {canEdit && <th className="text-left px-4 py-3">Actions</th>}
+              {canEditCategories && <th className="text-left px-4 py-3">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -115,10 +114,12 @@ export default function Categories() {
                 <tr key={c.id} className="border-t border-slate-700 hover:bg-slate-800/50">
                   <td className="px-4 py-3">{c.name}</td>
                   <td className="px-4 py-3">{c.description}</td>
-                  {canEdit && (
+                  {canEditCategories && (
                     <td className="px-4 py-3 space-x-2">
                       <button onClick={() => handleEdit(c)} className="text-emerald-400 hover:underline">Edit</button>
-                      <button onClick={() => handleDelete(c.id)} className="text-red-400 hover:underline">Delete</button>
+                      {canDeleteAny && (
+                        <button onClick={() => handleDelete(c.id)} className="text-red-400 hover:underline">Delete</button>
+                      )}
                     </td>
                   )}
                 </tr>

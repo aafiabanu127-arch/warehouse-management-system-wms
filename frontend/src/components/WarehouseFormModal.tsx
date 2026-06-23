@@ -1,5 +1,11 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import type { Warehouse } from '../types/warehouse';
+import { getUsers } from '../api/auth';
+
+interface User {
+  id: number;
+  username: string;
+}
 
 interface WarehouseFormModalProps {
   warehouse: Warehouse | null;
@@ -12,9 +18,14 @@ export default function WarehouseFormModal({ warehouse, onClose, onSubmit }: War
   const [location, setLocation] = useState('');
   const [totalCapacity, setTotalCapacity] = useState(0);
   const [availableCapacity, setAvailableCapacity] = useState(0);
-  const [managerName, setManagerName] = useState('');
+  const [manager, setManager] = useState<number | ''>('');
+  const [users, setUsers] = useState<User[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    getUsers().then(setUsers).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (warehouse) {
@@ -22,7 +33,13 @@ export default function WarehouseFormModal({ warehouse, onClose, onSubmit }: War
       setLocation(warehouse.location);
       setTotalCapacity(warehouse.total_capacity);
       setAvailableCapacity(warehouse.available_capacity);
-      setManagerName(warehouse.manager_name);
+      setManager(warehouse.manager ?? '');
+    } else {
+      setName('');
+      setLocation('');
+      setTotalCapacity(0);
+      setAvailableCapacity(0);
+      setManager('');
     }
   }, [warehouse]);
 
@@ -36,7 +53,7 @@ export default function WarehouseFormModal({ warehouse, onClose, onSubmit }: War
         location,
         total_capacity: totalCapacity,
         available_capacity: availableCapacity,
-        manager_name: managerName,
+        manager: manager === '' ? null : manager as number,
       });
     } catch {
       setError('Failed to save warehouse. Check your inputs.');
@@ -95,13 +112,17 @@ export default function WarehouseFormModal({ warehouse, onClose, onSubmit }: War
             </div>
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Manager Name</label>
-            <input
-              type="text"
-              value={managerName}
-              onChange={(e) => setManagerName(e.target.value)}
+            <label className="block text-sm text-slate-300 mb-1">Manager</label>
+            <select
+              value={manager}
+              onChange={(e) => setManager(e.target.value ? Number(e.target.value) : '')}
               className="w-full px-3 py-2 rounded bg-slate-700 text-white border border-slate-600 focus:outline-none focus:border-emerald-400"
-            />
+            >
+              <option value="">— No manager assigned —</option>
+              {users.map((u) => (
+                <option key={u.id} value={u.id}>{u.username}</option>
+              ))}
+            </select>
           </div>
           {error && <p className="text-red-400 text-sm">{error}</p>}
           <div className="flex gap-3 pt-2">

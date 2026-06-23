@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class Warehouse(models.Model):
@@ -6,7 +7,13 @@ class Warehouse(models.Model):
     location = models.CharField(max_length=255)
     total_capacity = models.FloatField()
     available_capacity = models.FloatField()
-    manager_name = models.CharField(max_length=100)
+    manager = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='managed_warehouses'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

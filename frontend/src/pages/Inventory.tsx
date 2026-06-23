@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { usePermissions } from '../hooks/usePermissions';
 import { getInventoryItems, createInventoryItem, updateInventoryItem, deleteInventoryItem } from '../api/inventory';
 import { getProducts } from '../api/products';
 import { getShelves } from '../api/shelves';
@@ -11,8 +11,7 @@ import InventoryFormModal from '../components/InventoryFormModal';
 const PAGE_SIZE = 20;
 
 export default function Inventory() {
-  const { user } = useAuth();
-  const canEdit = user?.role === 'ADMIN' || user?.role === 'MANAGER' || user?.role === 'STAFF';
+  const { canEditInventory, canDeleteAny } = usePermissions();
 
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -87,7 +86,7 @@ export default function Inventory() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Inventory</h1>
-        {canEdit && (
+        {canEditInventory && (
           <button onClick={handleCreate} className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded text-sm font-semibold transition">
             + Add Record
           </button>
@@ -112,7 +111,7 @@ export default function Inventory() {
               <th className="text-left px-4 py-3">Product</th>
               <th className="text-left px-4 py-3">Shelf</th>
               <th className="text-left px-4 py-3">Quantity</th>
-              {canEdit && <th className="text-left px-4 py-3">Actions</th>}
+              {canEditInventory && <th className="text-left px-4 py-3">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -127,10 +126,12 @@ export default function Inventory() {
                   <td className="px-4 py-3">{productName(item.product)}</td>
                   <td className="px-4 py-3">{shelfCode(item.shelf)}</td>
                   <td className="px-4 py-3">{item.quantity}</td>
-                  {canEdit && (
+                  {canEditInventory && (
                     <td className="px-4 py-3 space-x-2">
                       <button onClick={() => handleEdit(item)} className="text-emerald-400 hover:underline">Edit</button>
-                      <button onClick={() => handleDelete(item.id)} className="text-red-400 hover:underline">Delete</button>
+                      {canDeleteAny && (
+                        <button onClick={() => handleDelete(item.id)} className="text-red-400 hover:underline">Delete</button>
+                      )}
                     </td>
                   )}
                 </tr>

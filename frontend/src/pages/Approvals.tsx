@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import apiClient from '../api/client';
+import { usePermissions } from '../hooks/usePermissions';
 
 interface TransferRequest {
   id: number;
@@ -40,6 +41,7 @@ const STATUS_COLORS = {
 };
 
 export default function Approvals() {
+  const { canApproveRequests } = usePermissions();
   const [transfers, setTransfers] = useState<TransferRequest[]>([]);
   const [adjustments, setAdjustments] = useState<AdjustmentRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -176,7 +178,7 @@ export default function Approvals() {
                       {t.reviewed_at ? new Date(t.reviewed_at).toLocaleDateString() : '—'}
                     </td>
                     <td className="px-4 py-3">
-                      {t.status === 'PENDING' ? (
+                      {t.status === 'PENDING' && canApproveRequests ? (
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleAction('transfer', t.id, 'approve')}
@@ -192,7 +194,9 @@ export default function Approvals() {
                           </button>
                         </div>
                       ) : (
-                        <span className="text-slate-500 text-xs">No action needed</span>
+                        <span className="text-slate-500 text-xs">
+                          {t.status === 'PENDING' ? 'Awaiting approval' : 'No action needed'}
+                        </span>
                       )}
                     </td>
                   </tr>
@@ -243,7 +247,7 @@ export default function Approvals() {
                       {a.reviewed_at ? new Date(a.reviewed_at).toLocaleDateString() : '—'}
                     </td>
                     <td className="px-4 py-3">
-                      {a.status === 'PENDING' ? (
+                      {a.status === 'PENDING' && canApproveRequests ? (
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleAction('adjustment', a.id, 'approve')}
@@ -259,7 +263,9 @@ export default function Approvals() {
                           </button>
                         </div>
                       ) : (
-                        <span className="text-slate-500 text-xs">No action needed</span>
+                        <span className="text-slate-500 text-xs">
+                          {a.status === 'PENDING' ? 'Awaiting approval' : 'No action needed'}
+                        </span>
                       )}
                     </td>
                   </tr>

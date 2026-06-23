@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { usePermissions } from '../hooks/usePermissions';
 import { getProducts, createProduct, updateProduct, deleteProduct } from '../api/products';
 import { getCategories } from '../api/categories';
 import type { Product } from '../types/product';
@@ -9,8 +9,7 @@ import ProductFormModal from '../components/ProductFormModal';
 const PAGE_SIZE = 20;
 
 export default function Products() {
-  const { user } = useAuth();
-  const canEdit = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+  const { canEditProducts, canDeleteAny } = usePermissions();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -83,7 +82,7 @@ export default function Products() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Products</h1>
-        {canEdit && (
+        {canEditProducts && (
           <button onClick={handleCreate} className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded text-sm font-semibold transition">
             + Add Product
           </button>
@@ -109,7 +108,8 @@ export default function Products() {
               <th className="text-left px-4 py-3">Category</th>
               <th className="text-left px-4 py-3">Volume</th>
               <th className="text-left px-4 py-3">Weight</th>
-              {canEdit && <th className="text-left px-4 py-3">Actions</th>}
+              <th className="text-left px-4 py-3">Price</th>
+              {canEditProducts && <th className="text-left px-4 py-3">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -125,10 +125,13 @@ export default function Products() {
                   <td className="px-4 py-3">{categoryName(p.category)}</td>
                   <td className="px-4 py-3">{p.unit_volume}</td>
                   <td className="px-4 py-3">{p.unit_weight}</td>
-                  {canEdit && (
+                  <td className="px-4 py-3">${p.unit_price?.toFixed(2) ?? '—'}</td>
+                  {canEditProducts && (
                     <td className="px-4 py-3 space-x-2">
                       <button onClick={() => handleEdit(p)} className="text-emerald-400 hover:underline">Edit</button>
-                      <button onClick={() => handleDelete(p.id)} className="text-red-400 hover:underline">Delete</button>
+                      {canDeleteAny && (
+                        <button onClick={() => handleDelete(p.id)} className="text-red-400 hover:underline">Delete</button>
+                      )}
                     </td>
                   )}
                 </tr>

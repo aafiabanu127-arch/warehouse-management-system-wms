@@ -1,24 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { usePermissions } from '../hooks/usePermissions';
 import apiClient from '../api/client';
-
-const navItems = [
-  { to: '/dashboard', label: '📊 Dashboard' },
-  { to: '/warehouses', label: '🏭 Warehouses' },
-  { to: '/zones', label: '🗺️ Zones' },
-  { to: '/racks', label: '🗄️ Racks' },
-  { to: '/shelves', label: '📚 Shelves' },
-  { to: '/inventory', label: '📦 Inventory' },
-  { to: '/products', label: '🛒 Products' },
-  { to: '/categories', label: '🗂️ Categories' },
-  { to: '/stock-movements', label: '🔄 Stock Movements' },
-  { to: '/analytics', label: '📈 Analytics' },
-  { to: '/reports',   label: '📋 Reports' },
-  { to: '/approvals', label: '✅ Approvals' },
-  { to: '/notifications', label: '🔔 Notifications' },
-  { to: '/users', label: '👥 User Management' },
-];
 
 interface ActivityItem {
   id: number;
@@ -49,6 +33,24 @@ const allSearchItems: SearchResult[] = [
 
 export default function Layout() {
   const { user, logout } = useAuth();
+  const perms = usePermissions();
+
+  const navItems = [
+    { to: '/dashboard',      label: '📊 Dashboard',       show: true },
+    { to: '/warehouses',     label: '🏭 Warehouses',      show: true },
+    { to: '/zones',          label: '🗺️ Zones',           show: true },
+    { to: '/racks',          label: '🗄️ Racks',           show: true },
+    { to: '/shelves',        label: '📚 Shelves',         show: true },
+    { to: '/inventory',      label: '📦 Inventory',       show: true },
+    { to: '/products',       label: '🛒 Products',        show: true },
+    { to: '/categories',     label: '🗂️ Categories',      show: true },
+    { to: '/stock-movements',label: '🔄 Stock Movements', show: true },
+    { to: '/analytics',      label: '📈 Analytics',       show: perms.canViewAnalytics },
+    { to: '/reports',        label: '📋 Reports',         show: perms.canViewReports },
+    { to: '/approvals',      label: '✅ Approvals',       show: perms.canViewApprovals },
+    { to: '/notifications',  label: '🔔 Notifications',   show: true },
+    { to: '/users',          label: '👥 User Management', show: perms.canViewUsers },
+  ].filter(item => item.show);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);

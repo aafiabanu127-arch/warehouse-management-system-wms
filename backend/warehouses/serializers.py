@@ -3,6 +3,8 @@ from .models import Warehouse, Zone, Rack, Shelf
 
 
 class WarehouseSerializer(serializers.ModelSerializer):
+    manager_username = serializers.CharField(source='manager.username', read_only=True)
+
     class Meta:
         model = Warehouse
         fields = '__all__'

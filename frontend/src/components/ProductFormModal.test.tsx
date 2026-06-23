@@ -1,28 +1,16 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ProductFormModal from './ProductFormModal';
-import * as categoriesApi from '../api/categories';
-
-vi.mock('../api/categories');
-
-const mockCategories = {
-  count: 2,
-  next: null,
-  previous: null,
-  results: [
-    { id: 1, name: 'Electronics', description: 'Gadgets' },
-    { id: 2, name: 'Furniture', description: 'Tables and chairs' },
-  ],
-};
+const mockCategories = [
+  { id: 1, name: 'Electronics', description: 'Gadgets' },
+  { id: 2, name: 'Furniture', description: 'Tables and chairs' },
+];
 
 describe('ProductFormModal', () => {
-  beforeEach(() => {
-    vi.mocked(categoriesApi.getCategories).mockResolvedValue(mockCategories);
-  });
 
   it('renders "Add Product" heading and loads category options', async () => {
-    render(<ProductFormModal product={null} onClose={vi.fn()} onSubmit={vi.fn()} />);
+    render(<ProductFormModal product={null} categories={mockCategories} onClose={vi.fn()} onSubmit={vi.fn()} />);
     expect(screen.getByText('Add Product')).toBeInTheDocument();
 
     await waitFor(() => {
@@ -34,21 +22,21 @@ describe('ProductFormModal', () => {
   it('renders "Edit Product" heading and pre-fills fields when editing', async () => {
     const existing = {
       id: 5, name: 'Laptop', sku: 'LAP001', description: 'Dell Laptop',
-      unit_volume: 1.5, unit_weight: 2.0, category: 1,
+      unit_volume: 1.5, unit_weight: 2.0, unit_price: 999.99, category: 1,
     };
-    render(<ProductFormModal product={existing} onClose={vi.fn()} onSubmit={vi.fn()} />);
+    render(<ProductFormModal product={existing} categories={mockCategories} onClose={vi.fn()} onSubmit={vi.fn()} />);
 
     expect(screen.getByText('Edit Product')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Laptop')).toBeInTheDocument();
     expect(screen.getByDisplayValue('LAP001')).toBeInTheDocument();
     expect(screen.getByDisplayValue('1.5')).toBeInTheDocument();
 
-    await waitFor(() => expect(screen.getByText('Electronics')).toBeInTheDocument());
+    expect(screen.getByText('Electronics')).toBeInTheDocument();
   });
 
   it('shows an error if the category field is left blank and form submission is forced', async () => {
-    const { container } = render(<ProductFormModal product={null} onClose={vi.fn()} onSubmit={vi.fn()} />);
-    await waitFor(() => expect(screen.getByText('Electronics')).toBeInTheDocument());
+    const { container } = render(<ProductFormModal product={null} categories={mockCategories} onClose={vi.fn()} onSubmit={vi.fn()} />);
+    
 
     await userEvent.type(screen.getByLabelText('Name'), 'New Item');
     await userEvent.type(screen.getByLabelText('SKU'), 'NI001');
@@ -64,8 +52,7 @@ describe('ProductFormModal', () => {
 
   it('submits complete, correctly-typed data when all fields are filled', async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
-    render(<ProductFormModal product={null} onClose={vi.fn()} onSubmit={onSubmit} />);
-    await waitFor(() => expect(screen.getByText('Electronics')).toBeInTheDocument());
+    render(<ProductFormModal product={null} categories={mockCategories} onClose={vi.fn()} onSubmit={onSubmit} />);
 
     await userEvent.type(screen.getByLabelText('Name'), 'Desk Lamp');
     await userEvent.type(screen.getByLabelText('SKU'), 'DL001');
@@ -83,6 +70,7 @@ describe('ProductFormModal', () => {
         description: '',
         unit_volume: 0.5,
         unit_weight: 1.2,
+        unit_price: 0,
         category: 1,
       });
     });
@@ -90,8 +78,8 @@ describe('ProductFormModal', () => {
 
   it('shows a SKU-specific error message if onSubmit rejects', async () => {
     const onSubmit = vi.fn().mockRejectedValue(new Error('duplicate'));
-    render(<ProductFormModal product={null} onClose={vi.fn()} onSubmit={onSubmit} />);
-    await waitFor(() => expect(screen.getByText('Electronics')).toBeInTheDocument());
+    render(<ProductFormModal product={null} categories={mockCategories} onClose={vi.fn()} onSubmit={onSubmit} />);
+    
 
     await userEvent.type(screen.getByLabelText('Name'), 'Dup Item');
     await userEvent.type(screen.getByLabelText('SKU'), 'DUP01');
@@ -105,7 +93,7 @@ describe('ProductFormModal', () => {
 
   it('calls onClose when Cancel is clicked', async () => {
     const onClose = vi.fn();
-    render(<ProductFormModal product={null} onClose={onClose} onSubmit={vi.fn()} />);
+    render(<ProductFormModal product={null} categories={mockCategories} onClose={onClose} onSubmit={vi.fn()} />);
     await userEvent.click(screen.getByText('Cancel'));
     expect(onClose).toHaveBeenCalledTimes(1);
   });

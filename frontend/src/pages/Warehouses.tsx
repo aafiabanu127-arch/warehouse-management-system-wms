@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { usePermissions } from '../hooks/usePermissions';
 import { getWarehouses, createWarehouse, updateWarehouse, deleteWarehouse } from '../api/warehouses';
 import type { Warehouse } from '../types/warehouse';
 import WarehouseFormModal from '../components/WarehouseFormModal';
@@ -7,8 +7,7 @@ import WarehouseFormModal from '../components/WarehouseFormModal';
 const PAGE_SIZE = 20;
 
 export default function Warehouses() {
-  const { user } = useAuth();
-  const canEdit = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+  const { canEditWarehouses, canDeleteAny } = usePermissions();
 
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [count, setCount] = useState(0);
@@ -73,7 +72,7 @@ export default function Warehouses() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Warehouses</h1>
-        {canEdit && (
+        {canEditWarehouses && (
           <button
             onClick={handleCreate}
             className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded text-sm font-semibold transition"
@@ -105,7 +104,7 @@ export default function Warehouses() {
               <th className="text-left px-4 py-3">Total Capacity</th>
               <th className="text-left px-4 py-3">Available</th>
               <th className="text-left px-4 py-3">Manager</th>
-              {canEdit && <th className="text-left px-4 py-3">Actions</th>}
+              {canEditWarehouses && <th className="text-left px-4 py-3">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -120,11 +119,13 @@ export default function Warehouses() {
                   <td className="px-4 py-3">{w.location}</td>
                   <td className="px-4 py-3">{w.total_capacity}</td>
                   <td className="px-4 py-3">{w.available_capacity}</td>
-                  <td className="px-4 py-3">{w.manager_name}</td>
-                  {canEdit && (
+                  <td className="px-4 py-3">{w.manager_username ?? '—'}</td>
+                  {canEditWarehouses && (
                     <td className="px-4 py-3 space-x-2">
                       <button onClick={() => handleEdit(w)} className="text-emerald-400 hover:underline">Edit</button>
-                      <button onClick={() => handleDelete(w.id)} className="text-red-400 hover:underline">Delete</button>
+                      {canDeleteAny && (
+                        <button onClick={() => handleDelete(w.id)} className="text-red-400 hover:underline">Delete</button>
+                      )}
                     </td>
                   )}
                 </tr>

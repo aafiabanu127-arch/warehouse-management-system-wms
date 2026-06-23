@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { usePermissions } from '../hooks/usePermissions';
 import { getShelves, createShelf, updateShelf, deleteShelf } from '../api/shelves';
 import type { Shelf } from '../types/shelf';
 
 const PAGE_SIZE = 20;
 
 export default function Shelves() {
-  const { user } = useAuth();
-  const canEdit = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+  const { canEditShelves, canDeleteAny } = usePermissions();
 
   const [shelves, setShelves] = useState<Shelf[]>([]);
   const [count, setCount] = useState(0);
@@ -88,7 +87,7 @@ export default function Shelves() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Shelves</h1>
-        {canEdit && (
+        {canEditShelves && (
           <button onClick={openCreate} className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded text-sm font-semibold transition">
             + Add Shelf
           </button>
@@ -115,7 +114,7 @@ export default function Shelves() {
               <th className="text-left px-4 py-3">Capacity</th>
               <th className="text-left px-4 py-3">Occupied</th>
               <th className="text-left px-4 py-3">Usage</th>
-              {canEdit && <th className="text-left px-4 py-3">Actions</th>}
+              {canEditShelves && <th className="text-left px-4 py-3">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -141,10 +140,12 @@ export default function Shelves() {
                     <span className="text-xs text-slate-400">{usagePct(s)}%</span>
                   </div>
                 </td>
-                {canEdit && (
+                {canEditShelves && (
                   <td className="px-4 py-3 space-x-2">
                     <button onClick={() => openEdit(s)} className="text-emerald-400 hover:underline">Edit</button>
-                    <button onClick={() => handleDelete(s.id)} className="text-red-400 hover:underline">Delete</button>
+                    {canDeleteAny && (
+                        <button onClick={() => handleDelete(s.id)} className="text-red-400 hover:underline">Delete</button>
+                      )}
                   </td>
                 )}
               </tr>

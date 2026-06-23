@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { usePermissions } from '../hooks/usePermissions';
 import { getStockMovements, createStockMovement, updateStockMovement, deleteStockMovement } from '../api/stockMovements';
 import { getProducts } from '../api/products';
 import type { StockMovement } from '../types/stockMovement';
@@ -9,8 +9,7 @@ import StockMovementFormModal from '../components/StockMovementFormModal';
 const PAGE_SIZE = 20;
 
 export default function StockMovements() {
-  const { user } = useAuth();
-  const canEdit = user?.role === 'ADMIN' || user?.role === 'MANAGER' || user?.role === 'STAFF';
+  const { canEditStockMovements, canDeleteAny } = usePermissions();
 
   const [movements, setMovements] = useState<StockMovement[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -82,7 +81,7 @@ export default function StockMovements() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Stock Movements</h1>
-        {canEdit && (
+        {canEditStockMovements && (
           <button onClick={handleCreate} className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded text-sm font-semibold transition">
             + Add Stock Movement
           </button>
@@ -108,7 +107,7 @@ export default function StockMovements() {
               <th className="text-left px-4 py-3">Quantity</th>
               <th className="text-left px-4 py-3">Timestamp</th>
               <th className="text-left px-4 py-3">Notes</th>
-              {canEdit && <th className="text-left px-4 py-3">Actions</th>}
+              {canEditStockMovements && <th className="text-left px-4 py-3">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -124,10 +123,12 @@ export default function StockMovements() {
                   <td className="px-4 py-3">{m.quantity}</td>
                   <td className="px-4 py-3">{new Date(m.timestamp).toLocaleString()}</td>
                   <td className="px-4 py-3">{m.notes}</td>
-                  {canEdit && (
+                  {canEditStockMovements && (
                     <td className="px-4 py-3 space-x-2">
                       <button onClick={() => handleEdit(m)} className="text-emerald-400 hover:underline">Edit</button>
-                      <button onClick={() => handleDelete(m.id)} className="text-red-400 hover:underline">Delete</button>
+                      {canDeleteAny && (
+                        <button onClick={() => handleDelete(m.id)} className="text-red-400 hover:underline">Delete</button>
+                      )}
                     </td>
                   )}
                 </tr>

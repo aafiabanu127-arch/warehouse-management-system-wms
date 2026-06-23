@@ -4,7 +4,8 @@ export interface Warehouse {
   location: string;
   total_capacity: number;
   available_capacity: number;
-  manager_name: string;
+  manager: number | null;
+manager_username?: string;
   created_at: string;
 }
 

@@ -6,6 +6,7 @@ export interface Product {
   description: string;
   unit_volume: number;
   unit_weight: number;
+  unit_price: number;
 }
 
 export interface PaginatedResponse<T> {

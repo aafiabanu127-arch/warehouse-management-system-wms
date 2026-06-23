@@ -35,3 +35,9 @@ export async function confirmPasswordReset(data: {
   const response = await apiClient.post('/users/password-reset/confirm/', data);
   return response.data;
 }
+
+export async function getUsers(): Promise<{ id: number; username: string }[]> {
+  const response = await apiClient.get('/users/');
+  const data = response.data;
+  return Array.isArray(data) ? data : data.results ?? [];
+}

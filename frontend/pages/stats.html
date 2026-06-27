@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stats — WMS Portal</title>
+  <link rel="stylesheet" href="../css/landing.css" />
+  <style>
+    .page-hero {
+      min-height: 42vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 60px;
+      position: relative; overflow: hidden;
+    }
+    .page-hero .hero-bg {
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(178,213,229,0.1) 0%, transparent 70%);
+    }
+
+    /* Big stat counters */
+    .big-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      margin-top: 48px;
+    }
+    .big-stat-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s, border-color 0.3s;
+    }
+    .big-stat-card.visible { opacity:1; transform:translateY(0); }
+    .big-stat-card:hover { background: var(--glass-hover); border-color: var(--candy); }
+    .bs-num {
+      font-size: 56px;
+      font-weight: 900;
+      color: var(--candy);
+      line-height: 1;
+      letter-spacing: -2px;
+      font-variant-numeric: tabular-nums;
+    }
+    .bs-label { font-size: 13px; color: var(--text-muted); margin-top: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .bs-desc  { font-size: 12px; color: var(--text-muted); margin-top: 6px; opacity: 0.7; }
+
+    /* Bar chart */
+    .bar-section { margin-top: 48px; }
+    .bar-row {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 18px;
+      opacity: 0; transform: translateX(-16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .bar-row.visible { opacity:1; transform:translateX(0); }
+    .bar-label { width: 160px; font-size: 13px; color: var(--text-muted); flex-shrink: 0; text-align: right; }
+    .bar-track {
+      flex: 1;
+      height: 10px;
+      background: rgba(178,213,229,0.1);
+      border-radius: 50px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--candy-deep), var(--candy));
+      border-radius: 50px;
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .bar-val { width: 48px; font-size: 13px; font-weight: 700; color: var(--candy); }
+
+    /* Timeline */
+    .timeline { margin-top: 48px; position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 6px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--candy), transparent);
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 32px;
+      opacity: 0; transform: translateX(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .tl-item.visible { opacity:1; transform:translateX(0); }
+    .tl-dot {
+      position: absolute;
+      left: -25px; top: 4px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--candy);
+      box-shadow: 0 0 8px rgba(178,213,229,0.5);
+    }
+    .tl-phase { font-size: 11px; font-weight: 700; color: var(--candy); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .tl-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .tl-desc  { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* Test results */
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .test-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 22px;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s, border-color 0.3s;
+    }
+    .test-card.visible { opacity:1; transform:translateY(0); }
+    .test-card:hover { background: var(--glass-hover); border-color: var(--candy); }
+    .test-num { font-size: 36px; font-weight: 900; color: var(--candy); }
+    .test-label { font-size: 13px; font-weight: 700; margin-top: 4px; }
+    .test-sub   { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .test-bar {
+      margin-top: 12px;
+      height: 4px;
+      background: rgba(178,213,229,0.1);
+      border-radius: 50px;
+      overflow: hidden;
+    }
+    .test-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--candy-deep), var(--candy));
+      border-radius: 50px;
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+  </style>
+  <style>
+    .back-home-btn {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 7px 14px;
+      border-radius: 50px;
+      transition: all 0.2s;
+    }
+    .back-home-btn:hover {
+      background: rgba(178,213,229,0.15);
+      border-color: rgba(178,213,229,0.4);
+      color: #b2d5e5;
+      transform: translateX(-3px);
+    }
+  </style>
+</head>
+<body>
+  <a href="landing.html" class="back-home-btn">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Home
+  </a>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">🏭 <span>WMS<small> Portal</small></span></div>
+      <div class="nav-links" id="nav-links">
+        <a href="landing.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="stats.html" style="color:var(--candy)">Stats</a>
+        <a href="careers.html">Careers</a>
+        <a href="login.html" class="nav-btn-outline">Sign In</a>
+        <a href="register.html" class="nav-btn-primary">Get Started</a>
+      </div>
+      <button class="burger" id="burger" onclick="toggleMenu()">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="landing.html" onclick="closeMenu()">Home</a>
+      <a href="services.html" onclick="closeMenu()">Services</a>
+      <a href="about.html" onclick="closeMenu()">About</a>
+      <a href="stats.html" onclick="closeMenu()">Stats</a>
+      <a href="careers.html" onclick="closeMenu()">Careers</a>
+      <a href="login.html">Sign In</a>
+      <a href="register.html" class="nav-btn-primary" style="text-align:center">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">📊 By the Numbers</div>
+      <h1 class="hero-title">Platform Stats &amp;<br/><span class="grad">Project Metrics</span></h1>
+      <p class="hero-sub">A full breakdown of what was built — modules, APIs, test coverage, and development milestones.</p>
+    </div>
+  </section>
+
+  <!-- Big stats -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Key Numbers</div>
+      <h2 class="section-title">The Platform at a Glance</h2>
+      <div class="big-stats">
+        <div class="big-stat-card anim-card">
+          <div class="bs-num counter" data-target="10">0</div>
+          <div class="bs-label">Modules</div>
+          <div class="bs-desc">Core Django apps deployed</div>
+        </div>
+        <div class="big-stat-card anim-card">
+          <div class="bs-num counter" data-target="7">0</div>
+          <div class="bs-label">User Roles</div>
+          <div class="bs-desc">Role-based access levels</div>
+        </div>
+        <div class="big-stat-card anim-card">
+          <div class="bs-num counter" data-target="100">0</div>
+          <div class="bs-label">API Endpoints</div>
+          <div class="bs-desc">REST endpoints documented</div>
+        </div>
+        <div class="big-stat-card anim-card">
+          <div class="bs-num counter" data-target="107">0</div>
+          <div class="bs-label">Tests Passing</div>
+          <div class="bs-desc">Unit + integration tests</div>
+        </div>
+        <div class="big-stat-card anim-card">
+          <div class="bs-num counter" data-target="99">0</div>
+          <div class="bs-label">% Uptime</div>
+          <div class="bs-desc">Live on Render + Railway</div>
+        </div>
+        <div class="big-stat-card anim-card">
+          <div class="bs-num counter" data-target="5">0</div>
+          <div class="bs-label">Team Members</div>
+          <div class="bs-desc">Developers who built it</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module breakdown -->
+  <section class="section" style="background: linear-gradient(135deg, rgba(178,213,229,0.04), transparent); border-top:1px solid var(--glass-border); border-bottom:1px solid var(--glass-border);">
+    <div class="section-inner">
+      <div class="section-label">Module Breakdown</div>
+      <h2 class="section-title">API Endpoints per Module</h2>
+      <div class="bar-section">
+        <div class="bar-row anim-card"><div class="bar-label">Users &amp; Auth</div><div class="bar-track"><div class="bar-fill" data-pct="90"></div></div><div class="bar-val">18</div></div>
+        <div class="bar-row anim-card"><div class="bar-label">Inventory</div><div class="bar-track"><div class="bar-fill" data-pct="80"></div></div><div class="bar-val">16</div></div>
+        <div class="bar-row anim-card"><div class="bar-label">Stock Movements</div><div class="bar-track"><div class="bar-fill" data-pct="75"></div></div><div class="bar-val">15</div></div>
+        <div class="bar-row anim-card"><div class="bar-label">Warehouse Structure</div><div class="bar-track"><div class="bar-fill" data-pct="70"></div></div><div class="bar-val">14</div></div>
+        <div class="bar-row anim-card"><div class="bar-label">Reports</div><div class="bar-track"><div class="bar-fill" data-pct="60"></div></div><div class="bar-val">12</div></div>
+        <div class="bar-row anim-card"><div class="bar-label">Approvals</div><div class="bar-track"><div class="bar-fill" data-pct="50"></div></div><div class="bar-val">10</div></div>
+        <div class="bar-row anim-card"><div class="bar-label">Notifications</div><div class="bar-track"><div class="bar-fill" data-pct="40"></div></div><div class="bar-val">8</div></div>
+        <div class="bar-row anim-card"><div class="bar-label">AI Forecasting</div><div class="bar-track"><div class="bar-fill" data-pct="35"></div></div><div class="bar-val">7</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Test results -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Quality Assurance</div>
+      <h2 class="section-title">Test Coverage</h2>
+      <div class="test-grid">
+        <div class="test-card anim-card">
+          <div class="test-num">107</div>
+          <div class="test-label">Total Tests</div>
+          <div class="test-sub">All passing on latest build</div>
+          <div class="test-bar"><div class="test-bar-fill" data-pct="100"></div></div>
+        </div>
+        <div class="test-card anim-card">
+          <div class="test-num">74</div>
+          <div class="test-label">Unit Tests</div>
+          <div class="test-sub">Model and serializer coverage</div>
+          <div class="test-bar"><div class="test-bar-fill" data-pct="69"></div></div>
+        </div>
+        <div class="test-card anim-card">
+          <div class="test-num">33</div>
+          <div class="test-label">Integration Tests</div>
+          <div class="test-sub">End-to-end API flow tests</div>
+          <div class="test-bar"><div class="test-bar-fill" data-pct="31"></div></div>
+        </div>
+        <div class="test-card anim-card">
+          <div class="test-num">0</div>
+          <div class="test-label">Failures</div>
+          <div class="test-sub">Clean test suite on Render</div>
+          <div class="test-bar"><div class="test-bar-fill" data-pct="100"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dev timeline -->
+  <section class="section" style="background: linear-gradient(135deg, rgba(178,213,229,0.04), transparent); border-top:1px solid var(--glass-border);">
+    <div class="section-inner">
+      <div class="section-label">Development Timeline</div>
+      <h2 class="section-title">How We Built It</h2>
+      <div class="timeline">
+        <div class="tl-item anim-card">
+          <div class="tl-dot"></div>
+          <div class="tl-phase">Phase 1</div>
+          <div class="tl-title">Planning &amp; Architecture</div>
+          <div class="tl-desc">Defined requirements, drew ER diagrams, set up the Django project structure, and created the 9-app architecture plan.</div>
+        </div>
+        <div class="tl-item anim-card">
+          <div class="tl-dot"></div>
+          <div class="tl-phase">Phase 2</div>
+          <div class="tl-title">Backend Core</div>
+          <div class="tl-desc">Built all Django models, serializers, and REST API views. Implemented SimpleJWT authentication and role-based permission classes.</div>
+        </div>
+        <div class="tl-item anim-card">
+          <div class="tl-dot"></div>
+          <div class="tl-phase">Phase 3</div>
+          <div class="tl-title">Frontend Development</div>
+          <div class="tl-desc">Built all HTML/CSS/JS pages with glassmorphism design — dashboard, inventory, zones, racks, shelves, stock movements, and more.</div>
+        </div>
+        <div class="tl-item anim-card">
+          <div class="tl-dot"></div>
+          <div class="tl-phase">Phase 4</div>
+          <div class="tl-title">Advanced Features</div>
+          <div class="tl-desc">Added AI demand forecasting, PDF/CSV/Excel report exports, notifications system, and approvals workflow.</div>
+        </div>
+        <div class="tl-item anim-card">
+          <div class="tl-dot"></div>
+          <div class="tl-phase">Phase 5</div>
+          <div class="tl-title">Testing &amp; QA</div>
+          <div class="tl-desc">Wrote 107 unit and integration tests. Fixed 400/403/404 API errors, CORS issues, and PowerShell encoding bugs.</div>
+        </div>
+        <div class="tl-item anim-card">
+          <div class="tl-dot"></div>
+          <div class="tl-phase">Phase 6</div>
+          <div class="tl-title">Deployment &amp; Launch</div>
+          <div class="tl-desc">Deployed backend on Render, PostgreSQL on Railway. Configured environment variables, ALLOWED_HOSTS, and production WSGI settings.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">🏭 WMS Portal</div>
+        <p class="footer-tagline">A complete warehouse management platform for modern operations teams.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform</div>
+        <a href="services.html">Services</a>
+        <a href="stats.html">Stats</a>
+        <a href="login.html">Sign In</a>
+        <a href="register.html">Register</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Company</div>
+        <a href="about.html">About</a>
+        <a href="careers.html">Careers</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Legal</div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 WMS Portal. All rights reserved.</div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+    });
+    function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+    function closeMenu()  { document.getElementById('mobile-menu').classList.remove('open'); }
+
+    // Scroll observer
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => {
+            e.target.classList.add('visible');
+            // Animate bar fills
+            e.target.querySelectorAll('.bar-fill, .test-bar-fill').forEach(bar => {
+              bar.style.width = bar.dataset.pct + '%';
+            });
+          }, i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.anim-card').forEach(el => obs.observe(el));
+
+    // Counter animation
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.target);
+      const duration = 1800;
+      const start = performance.now();
+      function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCounter(e.target);
+          counterObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+  </script>
+</body>
+</html>

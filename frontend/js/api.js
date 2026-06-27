@@ -95,7 +95,7 @@ async function register(payload) {
 
 function logout() {
   clearTokens();
-  window.location.href = '../pages/login.html';
+  window.location.href = '../pages/landing.html';
 }
 
 // ── Current user ─────────────────────────────────────────────

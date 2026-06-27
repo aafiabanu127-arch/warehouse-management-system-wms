@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — WMS Portal</title>
+  <link rel="stylesheet" href="../css/landing.css" />
+  <style>
+    .page-hero {
+      min-height: 42vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 60px;
+      position: relative; overflow: hidden;
+    }
+    .page-hero .hero-bg {
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(178,213,229,0.1) 0%, transparent 70%);
+    }
+
+    /* Mission */
+    .mission-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-top: 48px;
+    }
+    @media (max-width: 768px) { .mission-grid { grid-template-columns: 1fr; } }
+    .mission-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-align: center;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s, border-color 0.3s;
+    }
+    .mission-card.visible { opacity:1; transform:translateY(0); }
+    .mission-card:hover { background: var(--glass-hover); border-color: var(--candy); }
+    .mission-icon { font-size: 36px; margin-bottom: 14px; }
+    .mission-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--candy); }
+    .mission-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* Story */
+    .story-block {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .story-block p {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+    .story-block p strong { color: var(--text); }
+
+    /* Team */
+    .team-full-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 48px;
+    }
+    .team-full-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s, border-color 0.3s;
+    }
+    .team-full-card.visible { opacity:1; transform:translateY(0); }
+    .team-full-card:hover { background: var(--glass-hover); border-color: var(--candy); }
+    .tf-header { display: flex; align-items: center; gap: 14px; }
+    .tf-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--candy), var(--candy-deep));
+      color: #07141e;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 22px;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 3px rgba(178,213,229,0.2);
+    }
+    .tf-name { font-size: 16px; font-weight: 700; }
+    .tf-role { font-size: 12px; color: var(--candy); font-weight: 600; margin-top: 3px; }
+    .tf-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .tf-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tf-tag {
+      font-size: 11px; padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(178,213,229,0.08);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+    }
+
+    /* Stack */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-top: 40px;
+    }
+    .stack-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s, border-color 0.3s;
+    }
+    .stack-card.visible { opacity:1; transform:translateY(0); }
+    .stack-card:hover { background: var(--glass-hover); border-color: var(--candy); }
+    .stack-icon { font-size: 28px; margin-bottom: 8px; }
+    .stack-name { font-size: 13px; font-weight: 700; color: var(--text); }
+    .stack-type { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+  </style>
+  <style>
+    .back-home-btn {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 7px 14px;
+      border-radius: 50px;
+      transition: all 0.2s;
+    }
+    .back-home-btn:hover {
+      background: rgba(178,213,229,0.15);
+      border-color: rgba(178,213,229,0.4);
+      color: #b2d5e5;
+      transform: translateX(-3px);
+    }
+  </style>
+</head>
+<body>
+  <a href="landing.html" class="back-home-btn">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Home
+  </a>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">🏭 <span>WMS<small> Portal</small></span></div>
+      <div class="nav-links" id="nav-links">
+        <a href="landing.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html" style="color:var(--candy)">About</a>
+        <a href="stats.html">Stats</a>
+        <a href="careers.html">Careers</a>
+        <a href="login.html" class="nav-btn-outline">Sign In</a>
+        <a href="register.html" class="nav-btn-primary">Get Started</a>
+      </div>
+      <button class="burger" id="burger" onclick="toggleMenu()">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="landing.html" onclick="closeMenu()">Home</a>
+      <a href="services.html" onclick="closeMenu()">Services</a>
+      <a href="about.html" onclick="closeMenu()">About</a>
+      <a href="stats.html" onclick="closeMenu()">Stats</a>
+      <a href="careers.html" onclick="closeMenu()">Careers</a>
+      <a href="login.html">Sign In</a>
+      <a href="register.html" class="nav-btn-primary" style="text-align:center">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">🎓 Academic Capstone Project</div>
+      <h1 class="hero-title">Built by Students.<br/><span class="grad">Deployed Like Pros.</span></h1>
+      <p class="hero-sub">WMS is a full-stack warehouse management system built from scratch — production-ready features, real deployment, real team.</p>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Our Mission</div>
+      <h2 class="section-title">Why We Built This</h2>
+      <div class="mission-grid">
+        <div class="mission-card anim-card">
+          <div class="mission-icon">🎯</div>
+          <div class="mission-title">Real-World Quality</div>
+          <div class="mission-desc">No toy projects. Every feature — auth, RBAC, AI forecasting, reports — is production-grade and fully functional.</div>
+        </div>
+        <div class="mission-card anim-card">
+          <div class="mission-icon">🤝</div>
+          <div class="mission-title">Team Collaboration</div>
+          <div class="mission-desc">Five developers working across backend, frontend, database, testing, and project management simultaneously.</div>
+        </div>
+        <div class="mission-card anim-card">
+          <div class="mission-icon">🚀</div>
+          <div class="mission-title">Live Deployment</div>
+          <div class="mission-desc">Deployed on Render with a Railway PostgreSQL database — not localhost, a real publicly accessible system.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="section" style="background: linear-gradient(135deg, rgba(178,213,229,0.04), rgba(74,154,184,0.03)); border-top:1px solid var(--glass-border); border-bottom:1px solid var(--glass-border);">
+    <div class="section-inner">
+      <div class="section-label">The Story</div>
+      <h2 class="section-title" style="margin-bottom:36px">How It Came Together</h2>
+      <div class="story-block">
+        <p>WMS started as an academic capstone project with one goal: build something that actually works in the real world, not just on paper. The team of five students split responsibilities across <strong>backend development, frontend design, database administration, testing, and project management</strong> — mirroring how real engineering teams operate.</p>
+        <p>The backend was built using <strong>Django 5 and Django REST Framework</strong>, with SimpleJWT for token-based authentication and a <strong>PostgreSQL database</strong> hosted on Railway. Nine Django apps handle users, staff, aircraft, flights, gates, baggage, maintenance, incidents, and audit logging.</p>
+        <p>The frontend was rebuilt from React/JSX to <strong>plain HTML, CSS, and JavaScript</strong> for simplicity and speed — with glassmorphism design, dark theme, and responsive layouts throughout. The entire system is deployed on <strong>Render</strong> and accessible publicly.</p>
+        <p>The AI module uses <strong>scikit-learn linear regression</strong> trained on historical stock movement data to produce per-product demand forecasts and restock recommendations — a genuine ML feature, not a mock.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">The Team</div>
+      <h2 class="section-title">Meet the Builders</h2>
+      <div class="team-full-grid">
+
+        <div class="team-full-card anim-card">
+          <div class="tf-header">
+            <div class="tf-avatar">A</div>
+            <div>
+              <div class="tf-name">Aafiya Banu</div>
+              <div class="tf-role">Project Manager &amp; Documentation</div>
+            </div>
+          </div>
+          <div class="tf-desc">Coordinates the team, maintains the project timeline, prepares SRS documentation, reports, presentations, and all user-facing documentation.</div>
+          <div class="tf-tags">
+            <span class="tf-tag">Project Planning</span>
+            <span class="tf-tag">SRS</span>
+            <span class="tf-tag">Documentation</span>
+            <span class="tf-tag">Presentations</span>
+          </div>
+        </div>
+
+        <div class="team-full-card anim-card">
+          <div class="tf-header">
+            <div class="tf-avatar">K</div>
+            <div>
+              <div class="tf-name">Kayathri</div>
+              <div class="tf-role">Frontend Developer</div>
+            </div>
+          </div>
+          <div class="tf-desc">Designs the user interface using HTML, CSS, and JavaScript, ensures responsive design across all screen sizes, and connects the frontend to backend APIs.</div>
+          <div class="tf-tags">
+            <span class="tf-tag">HTML / CSS / JS</span>
+            <span class="tf-tag">Responsive Design</span>
+            <span class="tf-tag">API Integration</span>
+          </div>
+        </div>
+
+        <div class="team-full-card anim-card">
+          <div class="tf-header">
+            <div class="tf-avatar">K</div>
+            <div>
+              <div class="tf-name">Kanchana</div>
+              <div class="tf-role">Backend Developer</div>
+            </div>
+          </div>
+          <div class="tf-desc">Develops the backend using Django and Django REST Framework, creates REST APIs, implements JWT authentication, and builds core business logic.</div>
+          <div class="tf-tags">
+            <span class="tf-tag">Django</span>
+            <span class="tf-tag">DRF</span>
+            <span class="tf-tag">SimpleJWT</span>
+            <span class="tf-tag">APIs</span>
+          </div>
+        </div>
+
+        <div class="team-full-card anim-card">
+          <div class="tf-header">
+            <div class="tf-avatar">J</div>
+            <div>
+              <div class="tf-name">Jora</div>
+              <div class="tf-role">Database Administrator</div>
+            </div>
+          </div>
+          <div class="tf-desc">Designs the database schema, manages Django models and migrations, defines relationships between entities, and optimises database performance.</div>
+          <div class="tf-tags">
+            <span class="tf-tag">PostgreSQL</span>
+            <span class="tf-tag">Schema Design</span>
+            <span class="tf-tag">Migrations</span>
+            <span class="tf-tag">Optimisation</span>
+          </div>
+        </div>
+
+        <div class="team-full-card anim-card">
+          <div class="tf-header">
+            <div class="tf-avatar">U</div>
+            <div>
+              <div class="tf-name">Uwise</div>
+              <div class="tf-role">Testing &amp; Deployment Engineer</div>
+            </div>
+          </div>
+          <div class="tf-desc">Performs unit and integration testing, fixes bugs, integrates frontend and backend systems, prepares the deployment pipeline, and verifies the final live system.</div>
+          <div class="tf-tags">
+            <span class="tf-tag">Unit Testing</span>
+            <span class="tf-tag">Integration Tests</span>
+            <span class="tf-tag">Render</span>
+            <span class="tf-tag">CI/CD</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="section" style="background: linear-gradient(135deg, rgba(178,213,229,0.04), transparent); border-top:1px solid var(--glass-border);">
+    <div class="section-inner">
+      <div class="section-label">Tech Stack</div>
+      <h2 class="section-title">What We Used</h2>
+      <div class="stack-grid">
+        <div class="stack-card anim-card"><div class="stack-icon">🐍</div><div class="stack-name">Django 5</div><div class="stack-type">Backend Framework</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">🔌</div><div class="stack-name">DRF</div><div class="stack-type">REST API Layer</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">🔐</div><div class="stack-name">SimpleJWT</div><div class="stack-type">Authentication</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">🐘</div><div class="stack-name">PostgreSQL</div><div class="stack-type">Database</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">🤖</div><div class="stack-name">scikit-learn</div><div class="stack-type">AI / ML</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">🔢</div><div class="stack-name">NumPy</div><div class="stack-type">Data Processing</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">📄</div><div class="stack-name">ReportLab</div><div class="stack-type">PDF Generation</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">📊</div><div class="stack-name">openpyxl</div><div class="stack-type">Excel Export</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">☁️</div><div class="stack-name">Render</div><div class="stack-type">Hosting</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">🚂</div><div class="stack-name">Railway</div><div class="stack-type">DB Hosting</div></div>
+        <div class="stack-card anim-card"><div class="stack-icon">🌐</div><div class="stack-name">HTML/CSS/JS</div><div class="stack-type">Frontend</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">🏭 WMS Portal</div>
+        <p class="footer-tagline">A complete warehouse management platform for modern operations teams.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform</div>
+        <a href="services.html">Services</a>
+        <a href="stats.html">Stats</a>
+        <a href="login.html">Sign In</a>
+        <a href="register.html">Register</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Company</div>
+        <a href="about.html">About</a>
+        <a href="careers.html">Careers</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Legal</div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 WMS Portal. All rights reserved.</div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+    });
+    function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+    function closeMenu()  { document.getElementById('mobile-menu').classList.remove('open'); }
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.anim-card').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

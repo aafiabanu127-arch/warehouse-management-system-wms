@@ -465,6 +465,19 @@ a { text-decoration: none; color: inherit; }
 .role-name  { font-weight: 700; margin-bottom: 6px; color: var(--candy); }
 .role-desc  { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 
+.roles-grid-bottom {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.roles-grid-bottom .role-card {
+  width: calc(20% - 7px);
+  min-width: 200px;
+  max-width: 260px;
+}
+
 /* ── Careers ──────────────────────────────────────────────── */
 .careers-section {
   background: linear-gradient(180deg, transparent, rgba(178,213,229,0.04), transparent);

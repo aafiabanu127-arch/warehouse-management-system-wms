@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Movements — WMS</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/stock-movements.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ── Sidebar ─────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏭</div>
+      <span>WMS<small>Warehouse System</small></span>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html"       class="nav-link"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="notifications.html"   class="nav-link"><span class="nav-icon">🔔</span> Notifications</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Inventory</div>
+      <a href="inventory.html"       class="nav-link"><span class="nav-icon">📦</span> Inventory</a>
+      <a href="stock-movements.html" class="nav-link active"><span class="nav-icon">🔄</span> Stock Movements</a>
+      <a href="products.html"        class="nav-link"><span class="nav-icon">🛒</span> Products</a>
+      <a href="categories.html"      class="nav-link"><span class="nav-icon">🏷️</span> Categories</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Warehouse</div>
+      <a href="warehouses.html"      class="nav-link"><span class="nav-icon">🏢</span> Warehouses</a>
+      <a href="zones.html"           class="nav-link"><span class="nav-icon">🗺️</span> Zones</a>
+      <a href="racks.html"           class="nav-link"><span class="nav-icon">🗄️</span> Racks</a>
+      <a href="shelves.html"         class="nav-link"><span class="nav-icon">📚</span> Shelves</a>
+    </div>
+
+    <div class="nav-section" id="nav-reports">
+      <div class="nav-section-label">Insights</div>
+      <a href="reports.html"         class="nav-link"><span class="nav-icon">📋</span> Reports</a>
+      <a href="analytics.html"       class="nav-link"><span class="nav-icon">📈</span> Analytics</a>
+      <a href="approvals.html"       class="nav-link"><span class="nav-icon">✅</span> Approvals</a>
+    </div>
+
+    <div class="nav-section" id="nav-admin">
+      <div class="nav-section-label">Admin</div>
+      <a href="users.html"           class="nav-link"><span class="nav-icon">👥</span> Users</a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role"></div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">🚪 Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ────────────────────────────────────────────── -->
+  <div class="main-area">
+
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Stock Movements</div>
+        <div class="topbar-sub">Track all inventory IN / OUT / TRANSFER events</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary" onclick="openAddModal()">+ Add Movement</button>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <select id="filter-type" onchange="loadMovements()">
+          <option value="">All Types</option>
+          <option value="IN">IN</option>
+          <option value="OUT">OUT</option>
+          <option value="TRANSFER">TRANSFER</option>
+        </select>
+        <input type="date" id="filter-date-from" onchange="loadMovements()" placeholder="From date" />
+        <input type="date" id="filter-date-to"   onchange="loadMovements()" placeholder="To date" />
+        <input type="text" id="filter-search" oninput="loadMovements()" placeholder="Search product…" />
+      </div>
+
+      <!-- Table -->
+      <div class="card mt-4">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Shelf</th>
+                <th>Performed By</th>
+                <th>Date</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="movements-body">
+              <tr class="loading-row"><td colspan="8">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Add Movement Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<div class="modal" id="add-modal">
+  <div class="modal-header">
+    <h3 class="modal-title">Add Stock Movement</h3>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Product</label>
+      <select id="m-product" required></select>
+    </div>
+    <div class="form-group">
+      <label>Movement Type</label>
+      <select id="m-type">
+        <option value="IN">IN — Receive stock</option>
+        <option value="OUT">OUT — Dispatch stock</option>
+        <option value="TRANSFER">TRANSFER</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Quantity</label>
+      <input type="number" id="m-qty" min="1" value="1" />
+    </div>
+    <div class="form-group">
+      <label>Shelf (optional)</label>
+      <select id="m-shelf">
+        <option value="">— None —</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Notes</label>
+      <textarea id="m-notes" rows="2" placeholder="Optional notes…"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+    <button class="btn btn-primary" onclick="submitMovement()">Save</button>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="../js/api.js"></script>
+<script src="../js/stock-movements.js"></script>
+</body>
+</html>

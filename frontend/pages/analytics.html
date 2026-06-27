@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics — WMS</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/analytics.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ── Sidebar ─────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏭</div>
+      <span>WMS<small>Warehouse System</small></span>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html"       class="nav-link"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="notifications.html"   class="nav-link"><span class="nav-icon">🔔</span> Notifications</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Inventory</div>
+      <a href="inventory.html"       class="nav-link"><span class="nav-icon">📦</span> Inventory</a>
+      <a href="stock-movements.html" class="nav-link"><span class="nav-icon">🔄</span> Stock Movements</a>
+      <a href="products.html"        class="nav-link"><span class="nav-icon">🛒</span> Products</a>
+      <a href="categories.html"      class="nav-link"><span class="nav-icon">🏷️</span> Categories</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Warehouse</div>
+      <a href="warehouses.html"      class="nav-link"><span class="nav-icon">🏢</span> Warehouses</a>
+      <a href="zones.html"           class="nav-link"><span class="nav-icon">🗺️</span> Zones</a>
+      <a href="racks.html"           class="nav-link"><span class="nav-icon">🗄️</span> Racks</a>
+      <a href="shelves.html"         class="nav-link"><span class="nav-icon">📚</span> Shelves</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Insights</div>
+      <a href="reports.html"         class="nav-link"><span class="nav-icon">📋</span> Reports</a>
+      <a href="analytics.html"       class="nav-link active"><span class="nav-icon">📈</span> Analytics</a>
+      <a href="approvals.html"       class="nav-link"><span class="nav-icon">✅</span> Approvals</a>
+    </div>
+    <div class="nav-section" id="nav-admin">
+      <div class="nav-section-label">Admin</div>
+      <a href="users.html"           class="nav-link"><span class="nav-icon">👥</span> Users</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role"></div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">🚪 Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ────────────────────────────────────────────── -->
+  <div class="main-area">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Analytics</div>
+        <div class="topbar-sub">ABC classification, velocity, demand forecasting</div>
+      </div>
+      <div class="topbar-right">
+        <div class="tab-group">
+          <button class="tab-btn active" onclick="switchTab('abc')">ABC Classification</button>
+          <button class="tab-btn"        onclick="switchTab('velocity')">Product Velocity</button>
+          <button class="tab-btn"        onclick="switchTab('forecast')">Demand Forecast</button>
+          <button class="tab-btn"        onclick="switchTab('utilization')">Utilization</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- ── ABC Classification ── -->
+      <div id="tab-abc" class="tab-panel">
+        <div class="abc-summary" id="abc-summary"></div>
+        <div class="card mt-4">
+          <div class="card-header">
+            <div class="card-title"><span class="accent"></span>ABC Product Classification</div>
+            <div class="abc-legend">
+              <span class="abc-A">A — High Value</span>
+              <span class="abc-B">B — Medium Value</span>
+              <span class="abc-C">C — Low Value</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Product</th><th>SKU</th><th>Class</th><th>Total Value</th><th>Cumulative %</th></tr>
+              </thead>
+              <tbody id="abc-body">
+                <tr class="loading-row"><td colspan="5">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Product Velocity ── -->
+      <div id="tab-velocity" class="tab-panel hidden">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="accent" style="background:var(--teal)"></span>Product Velocity</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Product</th><th>SKU</th><th>Total Movements</th><th>Velocity</th></tr>
+              </thead>
+              <tbody id="velocity-body">
+                <tr class="loading-row"><td colspan="4">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Demand Forecast ── -->
+      <div id="tab-forecast" class="tab-panel hidden">
+        <div class="forecast-summary card" id="forecast-summary-card" style="padding:20px;margin-bottom:16px;display:none"></div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="accent" style="background:var(--yellow)"></span>Demand Forecast by Product</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Product</th><th>SKU</th><th>Avg Daily Demand</th><th>Forecast (30d)</th><th>Trend</th><th>Confidence</th></tr>
+              </thead>
+              <tbody id="forecast-body">
+                <tr class="loading-row"><td colspan="6">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Utilization ── -->
+      <div id="tab-utilization" class="tab-panel hidden">
+        <div class="util-grid" id="util-grid">
+          <div class="loading-row">Loading…</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="../js/api.js"></script>
+<script src="../js/analytics.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Approvals — WMS</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/approvals.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ── Sidebar ─────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏭</div>
+      <span>WMS<small>Warehouse System</small></span>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html"       class="nav-link"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="notifications.html"   class="nav-link"><span class="nav-icon">🔔</span> Notifications</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Inventory</div>
+      <a href="inventory.html"       class="nav-link"><span class="nav-icon">📦</span> Inventory</a>
+      <a href="stock-movements.html" class="nav-link"><span class="nav-icon">🔄</span> Stock Movements</a>
+      <a href="products.html"        class="nav-link"><span class="nav-icon">🛒</span> Products</a>
+      <a href="categories.html"      class="nav-link"><span class="nav-icon">🏷️</span> Categories</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Warehouse</div>
+      <a href="warehouses.html"      class="nav-link"><span class="nav-icon">🏢</span> Warehouses</a>
+      <a href="zones.html"           class="nav-link"><span class="nav-icon">🗺️</span> Zones</a>
+      <a href="racks.html"           class="nav-link"><span class="nav-icon">🗄️</span> Racks</a>
+      <a href="shelves.html"         class="nav-link"><span class="nav-icon">📚</span> Shelves</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Insights</div>
+      <a href="reports.html"         class="nav-link"><span class="nav-icon">📋</span> Reports</a>
+      <a href="analytics.html"       class="nav-link"><span class="nav-icon">📈</span> Analytics</a>
+      <a href="approvals.html"       class="nav-link active"><span class="nav-icon">✅</span> Approvals</a>
+    </div>
+    <div class="nav-section" id="nav-admin">
+      <div class="nav-section-label">Admin</div>
+      <a href="users.html"           class="nav-link"><span class="nav-icon">👥</span> Users</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role"></div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">🚪 Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ────────────────────────────────────────────── -->
+  <div class="main-area">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Approvals</div>
+        <div class="topbar-sub">Inventory adjustment &amp; stock transfer requests</div>
+      </div>
+      <div class="topbar-right">
+        <div class="tab-group">
+          <button class="tab-btn active" onclick="switchTab('adjustments', this)">Adjustments</button>
+          <button class="tab-btn"        onclick="switchTab('transfers', this)">Transfers</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Pending count banner -->
+      <div class="pending-banner" id="pending-banner" style="display:none">
+        <span>⏳</span> <span id="pending-count">0</span> requests awaiting your review
+      </div>
+
+      <!-- Adjustments tab -->
+      <div id="tab-adjustments" class="tab-panel">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="accent"></span>Inventory Adjustment Requests</div>
+            <select id="adj-filter" onchange="loadAdjustments()">
+              <option value="">All</option>
+              <option value="PENDING">Pending</option>
+              <option value="APPROVED">Approved</option>
+              <option value="REJECTED">Rejected</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Inventory</th>
+                  <th>Reason</th>
+                  <th>Requested By</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adj-body">
+                <tr class="loading-row"><td colspan="7">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transfers tab -->
+      <div id="tab-transfers" class="tab-panel hidden">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="accent" style="background:var(--teal)"></span>Stock Transfer Requests</div>
+            <select id="tr-filter" onchange="loadTransfers()">
+              <option value="">All</option>
+              <option value="PENDING">Pending</option>
+              <option value="APPROVED">Approved</option>
+              <option value="REJECTED">Rejected</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>From Shelf</th>
+                  <th>To Shelf</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tr-body">
+                <tr class="loading-row"><td colspan="8">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="../js/api.js"></script>
+<script src="../js/approvals.js"></script>
+</body>
+</html>

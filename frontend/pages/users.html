@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Users — WMS</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/users.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ── Sidebar ─────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏭</div>
+      <span>WMS<small>Warehouse System</small></span>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html"       class="nav-link"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="notifications.html"   class="nav-link"><span class="nav-icon">🔔</span> Notifications</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Inventory</div>
+      <a href="inventory.html"       class="nav-link"><span class="nav-icon">📦</span> Inventory</a>
+      <a href="stock-movements.html" class="nav-link"><span class="nav-icon">🔄</span> Stock Movements</a>
+      <a href="products.html"        class="nav-link"><span class="nav-icon">🛒</span> Products</a>
+      <a href="categories.html"      class="nav-link"><span class="nav-icon">🏷️</span> Categories</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Warehouse</div>
+      <a href="warehouses.html"      class="nav-link"><span class="nav-icon">🏢</span> Warehouses</a>
+      <a href="zones.html"           class="nav-link"><span class="nav-icon">🗺️</span> Zones</a>
+      <a href="racks.html"           class="nav-link"><span class="nav-icon">🗄️</span> Racks</a>
+      <a href="shelves.html"         class="nav-link"><span class="nav-icon">📚</span> Shelves</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Insights</div>
+      <a href="reports.html"         class="nav-link"><span class="nav-icon">📋</span> Reports</a>
+      <a href="analytics.html"       class="nav-link"><span class="nav-icon">📈</span> Analytics</a>
+      <a href="approvals.html"       class="nav-link"><span class="nav-icon">✅</span> Approvals</a>
+    </div>
+    <div class="nav-section" id="nav-admin">
+      <div class="nav-section-label">Admin</div>
+      <a href="users.html"           class="nav-link active"><span class="nav-icon">👥</span> Users</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role"></div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">🚪 Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ────────────────────────────────────────────── -->
+  <div class="main-area">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Users</div>
+        <div class="topbar-sub">Manage system accounts and roles</div>
+      </div>
+      <div class="topbar-right">
+        <input type="text" id="search-input" oninput="loadUsers()" placeholder="Search users…" class="search-input" />
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Phone</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="users-body">
+              <tr class="loading-row"><td colspan="6">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Role Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<div class="modal" id="edit-modal">
+  <div class="modal-header">
+    <h3 class="modal-title">Edit User</h3>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <input type="hidden" id="edit-id" />
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="edit-username" readonly class="readonly-field" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" id="edit-email" readonly class="readonly-field" />
+    </div>
+    <div class="form-group">
+      <label>Role</label>
+      <select id="edit-role">
+        <option value="ADMIN">ADMIN</option>
+        <option value="MANAGER">MANAGER</option>
+        <option value="STAFF">STAFF</option>
+        <option value="VIEWER">VIEWER</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Department</label>
+      <input type="text" id="edit-department" placeholder="e.g. Logistics" />
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="text" id="edit-phone" placeholder="+91 98765 43210" />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+    <button class="btn btn-primary" onclick="saveUser()">Save Changes</button>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="../js/api.js"></script>
+<script src="../js/users.js"></script>
+</body>
+</html>

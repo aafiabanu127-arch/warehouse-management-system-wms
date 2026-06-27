@@ -1,0 +1,81 @@
+/* ── Tabs ─────────────────────────────────────────────────── */
+.tab-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  padding: 7px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover  { border-color: var(--cyan); color: var(--text-primary); }
+.tab-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0,230,255,0.08); }
+
+.tab-panel  { display: block; }
+.tab-panel.hidden { display: none; }
+
+/* ── ABC ─────────────────────────────────────────────────── */
+.abc-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.abc-stat-card {
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+}
+
+.abc-stat-card .abc-class { font-size: 22px; font-weight: 800; }
+.abc-stat-card .abc-info  { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+.card-A { border-left: 4px solid #ff5050; }
+.card-B { border-left: 4px solid var(--yellow); }
+.card-C { border-left: 4px solid #00c878; }
+
+.abc-A { color: #ff5050;       font-weight: 600; font-size: 13px; margin-right: 12px; }
+.abc-B { color: var(--yellow); font-weight: 600; font-size: 13px; margin-right: 12px; }
+.abc-C { color: #00c878;       font-weight: 600; font-size: 13px; }
+
+.abc-legend { display: flex; align-items: center; }
+
+.badge-A { background: rgba(255,80,80,0.15);  color: #ff5050;       padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+.badge-B { background: rgba(255,200,0,0.15);  color: var(--yellow); padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+.badge-C { background: rgba(0,200,120,0.15);  color: #00c878;       padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+
+/* ── Velocity ─────────────────────────────────────────────── */
+.velocity-bar-wrap { width: 120px; background: var(--bg); border-radius: 4px; height: 8px; }
+.velocity-bar      { height: 8px; border-radius: 4px; background: var(--cyan); }
+
+/* ── Utilization cards ───────────────────────────────────── */
+.util-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.util-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+
+.util-name  { font-weight: 600; margin-bottom: 10px; }
+.util-track { background: var(--bg); border-radius: 4px; height: 10px; margin-bottom: 8px; overflow: hidden; }
+.util-fill  { height: 10px; border-radius: 4px; transition: width 0.6s ease; }
+.util-pct   { font-size: 13px; color: var(--text-muted); }
+
+/* ── Forecast ────────────────────────────────────────────── */
+.trend-up   { color: #00c878; font-weight: 600; }
+.trend-down { color: #ff5050; font-weight: 600; }
+.trend-flat { color: var(--text-muted); }

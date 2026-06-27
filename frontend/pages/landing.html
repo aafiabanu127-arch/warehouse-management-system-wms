@@ -4,157 +4,221 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WMS — Warehouse Management System</title>
-  <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/landing.css" />
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav class="nav">
+  <!-- ── NAVBAR ─────────────────────────────────────────────── -->
+  <nav class="navbar" id="navbar">
     <div class="nav-inner">
-      <div class="nav-logo">
-        <div class="nav-logo-icon">🏭</div>
-        <span>WMS <small>Portal</small></span>
-      </div>
-      <div class="nav-links">
-        <a href="#features">Features</a>
+      <div class="nav-logo">🏭 <span>WMS<small> Portal</small></span></div>
+      <div class="nav-links" id="nav-links">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
         <a href="#stats">Stats</a>
-        <a href="#roles">Roles</a>
-        <a href="login.html" class="btn btn-outline">Sign In</a>
-        <a href="register.html" class="btn btn-primary">Get Started</a>
+        <a href="#careers" onclick="goTo('careers.html')">Careers</a>
+        <a href="login.html" class="nav-btn-outline">Sign In</a>
+        <a href="register.html" class="nav-btn-primary">Get Started</a>
       </div>
-      <button class="nav-burger" id="nav-burger">☰</button>
+      <button class="burger" id="burger" onclick="toggleMenu()">☰</button>
     </div>
     <!-- Mobile menu -->
-    <div class="nav-mobile" id="nav-mobile">
-      <a href="#features">Features</a>
-      <a href="#stats">Stats</a>
-      <a href="#roles">Roles</a>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#home"     onclick="closeMenu()">Home</a>
+      <a href="#services" onclick="closeMenu()">Services</a>
+      <a href="#about"    onclick="closeMenu()">About</a>
+      <a href="#stats"    onclick="closeMenu()">Stats</a>
+      <a href="careers.html">Careers</a>
       <a href="login.html">Sign In</a>
-      <a href="register.html" class="btn btn-primary" style="text-align:center">Get Started</a>
+      <a href="register.html" class="nav-btn-primary" style="text-align:center">Get Started</a>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-glow hero-glow-1"></div>
-    <div class="hero-glow hero-glow-2"></div>
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
     <div class="hero-inner">
       <div class="hero-badge">🚀 Next-Gen Warehouse Operations</div>
-      <h1 class="hero-title">
-        Manage Your Warehouse<br/>
-        <span class="gradient-text">Smarter & Faster</span>
-      </h1>
-      <p class="hero-sub">
-        A complete warehouse management platform — track inventory, manage zones,
-        racks and shelves, monitor stock movements, and generate reports all in one place.
-      </p>
+      <h1 class="hero-title">Manage Your Warehouse<br/><span class="grad">Smarter & Faster</span></h1>
+      <p class="hero-sub">A complete warehouse management platform — track inventory, manage zones, racks and shelves, monitor stock movements and generate reports all in one place.</p>
       <div class="hero-actions">
-        <a href="register.html" class="btn btn-primary btn-lg">Get Started Free</a>
-        <a href="login.html"    class="btn btn-outline btn-lg">Sign In →</a>
+        <a href="register.html" class="btn-primary-lg">Get Started Free</a>
+        <a href="login.html"    class="btn-glass-lg">Sign In →</a>
       </div>
       <div class="hero-chips">
         <span class="chip">✅ Role-based Access</span>
-        <span class="chip">✅ Real-time Stock Tracking</span>
+        <span class="chip">✅ Real-time Tracking</span>
         <span class="chip">✅ Analytics & Reports</span>
+        <span class="chip">✅ AI Forecasting</span>
       </div>
     </div>
+    <div class="scroll-hint" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">↓</div>
   </section>
 
-  <!-- STATS BANNER -->
-  <section class="stats-banner" id="stats">
-    <div class="stats-inner">
-      <div class="stat-item">
-        <div class="stat-num" data-target="10">0</div>
-        <div class="stat-desc">Modules</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" data-target="7">0</div>
-        <div class="stat-desc">User Roles</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" data-target="100">0</div>
-        <div class="stat-desc">API Endpoints</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" data-target="99">0</div>
-        <div class="stat-desc">% Uptime</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="features" id="features">
+  <!-- ── SERVICES ───────────────────────────────────────────── -->
+  <section class="section" id="services">
     <div class="section-inner">
       <div class="section-label">What We Offer</div>
       <h2 class="section-title">Everything You Need to Run a Warehouse</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">📦</div>
+      <p class="section-sub">From raw stock intake to delivery — WMS covers every step of your warehouse lifecycle.</p>
+      <div class="cards-grid">
+        <div class="glass-card anim-card">
+          <div class="card-icon">📦</div>
           <h3>Inventory Management</h3>
           <p>Track stock levels in real time across all warehouses with low-stock alerts and reorder triggers.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🏢</div>
+        <div class="glass-card anim-card">
+          <div class="card-icon">🏢</div>
           <h3>Warehouse Structure</h3>
-          <p>Organize your physical space into warehouses, zones, racks and shelves with capacity tracking.</p>
+          <p>Organize physical space into warehouses, zones, racks and shelves with capacity tracking.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔄</div>
+        <div class="glass-card anim-card">
+          <div class="card-icon">🔄</div>
           <h3>Stock Movements</h3>
           <p>Log every inbound, outbound and transfer movement with full audit trail and history.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">📈</div>
+        <div class="glass-card anim-card">
+          <div class="card-icon">📈</div>
           <h3>Analytics & Reports</h3>
           <p>Visual dashboards and exportable reports for occupancy, stock value and movement trends.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">✅</div>
+        <div class="glass-card anim-card">
+          <div class="card-icon">✅</div>
           <h3>Approvals Workflow</h3>
           <p>Approve or reject inventory adjustments and stock transfers with role-based controls.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔔</div>
-          <h3>Notifications</h3>
-          <p>Get instant alerts for low stock, pending approvals and critical warehouse events.</p>
+        <div class="glass-card anim-card">
+          <div class="card-icon">🤖</div>
+          <h3>AI Demand Forecasting</h3>
+          <p>Linear regression-powered demand predictions to help you stock smarter and reduce waste.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ROLES -->
-  <section class="roles" id="roles">
+  <!-- ── STATS ──────────────────────────────────────────────── -->
+  <section class="stats-section" id="stats">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-num" data-target="10">0</div>
+        <div class="stat-label">Modules</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="7">0</div>
+        <div class="stat-label">User Roles</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="100">0</div>
+        <div class="stat-label">API Endpoints</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="107">0</div>
+        <div class="stat-label">Tests Passing</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="99">0</div>
+        <div class="stat-label">% Uptime</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ──────────────────────────────────────────────── -->
+  <section class="section" id="about">
+    <div class="section-inner about-grid">
+      <div class="about-text">
+        <div class="section-label">About the Project</div>
+        <h2 class="section-title">Built by Students.<br/>Deployed Like Pros.</h2>
+        <p>WMS is a full-stack warehouse management system built as an academic capstone project. It uses Django REST Framework on the backend, plain HTML/CSS/JS on the frontend, and is deployed on Render with a Railway PostgreSQL database.</p>
+        <p style="margin-top:14px">The system supports role-based access, real-time stock tracking, AI demand forecasting, and PDF/CSV/Excel report exports — all production-ready features built from scratch.</p>
+        <div class="about-tags">
+          <span class="tag">Django 5</span>
+          <span class="tag">DRF</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">SimpleJWT</span>
+          <span class="tag">NumPy</span>
+          <span class="tag">ReportLab</span>
+          <span class="tag">Render</span>
+        </div>
+      </div>
+      <div class="about-team">
+        <div class="section-label">The Team</div>
+        <div class="team-list">
+          <div class="team-card glass-card">
+            <div class="team-avatar">T</div>
+            <div>
+              <div class="team-name">Thoudam Lanchenba</div>
+              <div class="team-role">Backend Lead</div>
+            </div>
+          </div>
+          <div class="team-card glass-card">
+            <div class="team-avatar">L</div>
+            <div>
+              <div class="team-name">Lakshya</div>
+              <div class="team-role">Full Stack</div>
+            </div>
+          </div>
+          <div class="team-card glass-card">
+            <div class="team-avatar">K</div>
+            <div>
+              <div class="team-name">Kowshika</div>
+              <div class="team-role">Frontend</div>
+            </div>
+          </div>
+          <div class="team-card glass-card">
+            <div class="team-avatar">S</div>
+            <div>
+              <div class="team-name">Shreepriyan</div>
+              <div class="team-role">Database & API</div>
+            </div>
+          </div>
+          <div class="team-card glass-card">
+            <div class="team-avatar">N</div>
+            <div>
+              <div class="team-name">Naren</div>
+              <div class="team-role">Testing & Deployment</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ROLES ──────────────────────────────────────────────── -->
+  <section class="section" id="roles">
     <div class="section-inner">
       <div class="section-label">Access Control</div>
       <h2 class="section-title">Built for Every Role in Your Team</h2>
       <div class="roles-grid">
-        <div class="role-card">
+        <div class="role-card glass-card">
           <div class="role-icon">👑</div>
           <div class="role-name">Admin</div>
           <div class="role-desc">Full system access — manage users, warehouses and all settings.</div>
         </div>
-        <div class="role-card">
+        <div class="role-card glass-card">
           <div class="role-icon">🏢</div>
           <div class="role-name">Manager</div>
-          <div class="role-desc">Oversee warehouse operations, approve requests and generate reports.</div>
+          <div class="role-desc">Oversee operations, approve requests and generate reports.</div>
         </div>
-        <div class="role-card">
+        <div class="role-card glass-card">
           <div class="role-icon">👷</div>
           <div class="role-name">Supervisor</div>
-          <div class="role-desc">Supervise staff, manage stock movements and monitor zone capacity.</div>
+          <div class="role-desc">Supervise staff, manage stock movements and monitor capacity.</div>
         </div>
-        <div class="role-card">
+        <div class="role-card glass-card">
           <div class="role-icon">🧑‍💼</div>
           <div class="role-name">Staff</div>
           <div class="role-desc">Record stock movements and view assigned inventory items.</div>
         </div>
-        <div class="role-card">
+        <div class="role-card glass-card">
           <div class="role-icon">📦</div>
           <div class="role-name">Warehouse Staff</div>
-          <div class="role-desc">Handle physical goods, update shelf occupancy and log transfers.</div>
+          <div class="role-desc">Handle physical goods and update shelf occupancy.</div>
         </div>
-        <div class="role-card">
+        <div class="role-card glass-card">
           <div class="role-icon">👁️</div>
           <div class="role-name">Viewer</div>
           <div class="role-desc">Read-only access to dashboards, reports and inventory data.</div>
@@ -163,33 +227,76 @@
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="cta">
-    <div class="cta-glow"></div>
-    <div class="cta-inner">
-      <h2>Ready to Optimize Your Warehouse?</h2>
-      <p>Join your team on WMS and take control of your entire warehouse operation today.</p>
-      <div class="cta-actions">
-        <a href="register.html" class="btn btn-primary btn-lg">Create Your Account</a>
-        <a href="login.html"    class="btn btn-outline btn-lg">Sign In</a>
+  <!-- ── CAREERS ────────────────────────────────────────────── -->
+  <section class="section careers-section" id="careers">
+    <div class="section-inner">
+      <div class="section-label">Join Us</div>
+      <h2 class="section-title">We're Hiring</h2>
+      <p class="section-sub">Looking to work on real-world warehouse tech? We have open roles for passionate developers.</p>
+      <div class="careers-grid">
+        <div class="job-card glass-card anim-card">
+          <div class="job-badge">Full Time</div>
+          <h3>Backend Developer</h3>
+          <p>Django, DRF, PostgreSQL experience preferred. Work on API design and data models.</p>
+          <a href="careers.html" class="job-btn">View Role →</a>
+        </div>
+        <div class="job-card glass-card anim-card">
+          <div class="job-badge">Internship</div>
+          <h3>Frontend Engineer</h3>
+          <p>Build responsive, accessible UIs. HTML/CSS/JS with an eye for great design.</p>
+          <a href="careers.html" class="job-btn">View Role →</a>
+        </div>
+        <div class="job-card glass-card anim-card">
+          <div class="job-badge">Part Time</div>
+          <h3>QA & Testing</h3>
+          <p>Write automated tests, catch bugs, and help us maintain 99% uptime.</p>
+          <a href="careers.html" class="job-btn">View Role →</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section class="cta-section">
+    <div class="cta-orb"></div>
+    <div class="cta-inner">
+      <h2>Ready to Optimize Your Warehouse?</h2>
+      <p>Join your team on WMS and take control of your entire warehouse operation today.</p>
+      <div class="hero-actions">
+        <a href="register.html" class="btn-primary-lg">Create Your Account</a>
+        <a href="login.html"    class="btn-glass-lg">Sign In →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-logo">
-        <div class="nav-logo-icon">🏭</div>
-        <span>WMS Portal</span>
+      <div class="footer-col">
+        <div class="footer-logo">🏭 WMS Portal</div>
+        <p class="footer-tagline">A full-stack warehouse management system built for real-world operations.</p>
       </div>
-      <div class="footer-links">
-        <a href="login.html">Login</a>
+      <div class="footer-col">
+        <div class="footer-heading">Navigation</div>
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#stats">Stats</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Account</div>
+        <a href="login.html">Sign In</a>
         <a href="register.html">Register</a>
-        <a href="#features">Features</a>
+        <a href="dashboard.html">Dashboard</a>
       </div>
-      <div class="footer-copy">© 2026 Warehouse Management System. All rights reserved.</div>
+      <div class="footer-col">
+        <div class="footer-heading">Pages</div>
+        <a href="careers.html">Careers</a>
+        <a href="notifications.html">Notifications</a>
+        <a href="analytics.html">Analytics</a>
+      </div>
     </div>
+    <div class="footer-bottom">© 2026 Warehouse Management System. Built with ❤️ by the WMS Team.</div>
   </footer>
 
   <script src="../js/landing.js"></script>

@@ -1,0 +1,14 @@
+/* inventory.css */
+.mb-4 { margin-bottom: 16px; }
+
+.stock-ok   { color: var(--green);  font-weight: 600; }
+.stock-low  { color: var(--yellow); font-weight: 600; }
+.stock-zero { color: var(--red);    font-weight: 600; }
+
+.qty-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 700;
+}

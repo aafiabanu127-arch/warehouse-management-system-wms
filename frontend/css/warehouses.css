@@ -1,0 +1,104 @@
+/* warehouses.css */
+.mb-4 { margin-bottom: 16px; }
+
+.wh-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.wh-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.wh-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--teal));
+}
+
+.wh-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 24px rgba(34,211,238,0.07);
+}
+
+.wh-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.wh-icon {
+  width: 46px; height: 46px;
+  background: rgba(34,211,238,0.1);
+  border: 1px solid rgba(34,211,238,0.2);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.wh-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.wh-loc   { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+.wh-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.wh-stat {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.wh-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.wh-stat-value { font-size: 18px; font-weight: 700; color: var(--cyan); margin-top: 3px; }
+
+.util-bar-wrap {
+  background: rgba(255,255,255,0.05);
+  border-radius: 99px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.util-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--cyan), var(--teal));
+  transition: width 0.5s ease;
+}
+
+.util-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.wh-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.wh-manager { font-size: 12px; color: var(--text-muted); }
+
+.wh-actions { display: flex; gap: 6px; }

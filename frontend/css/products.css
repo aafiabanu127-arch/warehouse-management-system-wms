@@ -1,0 +1,29 @@
+/* products.css */
+.mb-4 { margin-bottom: 16px; }
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.action-btns {
+  display: flex;
+  gap: 6px;
+}
+
+@media (max-width: 600px) {
+  .form-row-2,
+  .form-row-3 { grid-template-columns: 1fr; }
+}

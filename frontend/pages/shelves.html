@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shelves — WMS</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/shelves.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏭</div>
+      <span>WMS<small>Warehouse System</small></span>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html"       class="nav-link"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="notifications.html"   class="nav-link"><span class="nav-icon">🔔</span> Notifications</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Inventory</div>
+      <a href="inventory.html"       class="nav-link"><span class="nav-icon">📦</span> Inventory</a>
+      <a href="stock-movements.html" class="nav-link"><span class="nav-icon">🔄</span> Stock Movements</a>
+      <a href="products.html"        class="nav-link"><span class="nav-icon">🛒</span> Products</a>
+      <a href="categories.html"      class="nav-link"><span class="nav-icon">🏷️</span> Categories</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Warehouse</div>
+      <a href="warehouses.html"      class="nav-link"><span class="nav-icon">🏢</span> Warehouses</a>
+      <a href="zones.html"           class="nav-link"><span class="nav-icon">🗺️</span> Zones</a>
+      <a href="racks.html"           class="nav-link"><span class="nav-icon">🗄️</span> Racks</a>
+      <a href="shelves.html"         class="nav-link active"><span class="nav-icon">📚</span> Shelves</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Insights</div>
+      <a href="reports.html"         class="nav-link"><span class="nav-icon">📋</span> Reports</a>
+      <a href="analytics.html"       class="nav-link"><span class="nav-icon">📈</span> Analytics</a>
+      <a href="approvals.html"       class="nav-link"><span class="nav-icon">✅</span> Approvals</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Admin</div>
+      <a href="users.html"           class="nav-link"><span class="nav-icon">👥</span> Users</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role"></div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">🚪 Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-area">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Shelves</div>
+        <div class="topbar-sub">Manage shelves inside racks</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary" id="btn-add">＋ Add Shelf</button>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Stats -->
+      <div class="stat-grid mb-4">
+        <div class="stat-card">
+          <div class="stat-label">Total Shelves</div>
+          <div class="stat-value" id="stat-total">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Capacity</div>
+          <div class="stat-value" id="stat-capacity">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Occupied Capacity</div>
+          <div class="stat-value" id="stat-occupied">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg Occupancy</div>
+          <div class="stat-value" id="stat-avg">—%</div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar mb-4">
+        <input type="text" id="search" class="form-control" placeholder="🔍 Search shelf code…" style="max-width:260px" />
+        <select id="filter-rack" class="form-control" style="max-width:220px">
+          <option value="">All Racks</option>
+        </select>
+      </div>
+
+      <!-- Table -->
+      <div class="card">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Shelf Code</th>
+                <th>Rack</th>
+                <th>Capacity</th>
+                <th>Occupied</th>
+                <th>Occupancy</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="shelves-body">
+              <tr><td colspan="6" class="text-center text-muted">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="modal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-title">Add Shelf</h3>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Shelf Code *</label>
+        <input id="f-code" type="text" class="form-control" placeholder="e.g. SHELF-A1-01" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Rack *</label>
+        <select id="f-rack" class="form-control">
+          <option value="">Select rack…</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Capacity *</label>
+        <input id="f-capacity" type="number" class="form-control" placeholder="e.g. 50" min="0" step="0.01" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Occupied Capacity</label>
+        <input id="f-occupied" type="number" class="form-control" placeholder="e.g. 20" min="0" step="0.01" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="btn-cancel">Cancel</button>
+      <button class="btn btn-primary" id="btn-save">Save Shelf</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" id="confirm-modal" style="display:none">
+  <div class="modal-box" style="max-width:400px">
+    <div class="modal-header">
+      <h3>Delete Shelf</h3>
+      <button class="modal-close" id="confirm-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--text-muted)">Are you sure you want to delete shelf <strong id="confirm-name"></strong>?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+      <button class="btn btn-danger" id="confirm-delete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="../js/api.js"></script>
+<script src="../js/shelves.js"></script>
+</body>
+</html>

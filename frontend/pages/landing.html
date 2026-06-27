@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WMS — Warehouse Management System</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/landing.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">🏭</div>
+        <span>WMS <small>Portal</small></span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#stats">Stats</a>
+        <a href="#roles">Roles</a>
+        <a href="login.html" class="btn btn-outline">Sign In</a>
+        <a href="register.html" class="btn btn-primary">Get Started</a>
+      </div>
+      <button class="nav-burger" id="nav-burger">☰</button>
+    </div>
+    <!-- Mobile menu -->
+    <div class="nav-mobile" id="nav-mobile">
+      <a href="#features">Features</a>
+      <a href="#stats">Stats</a>
+      <a href="#roles">Roles</a>
+      <a href="login.html">Sign In</a>
+      <a href="register.html" class="btn btn-primary" style="text-align:center">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">🚀 Next-Gen Warehouse Operations</div>
+      <h1 class="hero-title">
+        Manage Your Warehouse<br/>
+        <span class="gradient-text">Smarter & Faster</span>
+      </h1>
+      <p class="hero-sub">
+        A complete warehouse management platform — track inventory, manage zones,
+        racks and shelves, monitor stock movements, and generate reports all in one place.
+      </p>
+      <div class="hero-actions">
+        <a href="register.html" class="btn btn-primary btn-lg">Get Started Free</a>
+        <a href="login.html"    class="btn btn-outline btn-lg">Sign In →</a>
+      </div>
+      <div class="hero-chips">
+        <span class="chip">✅ Role-based Access</span>
+        <span class="chip">✅ Real-time Stock Tracking</span>
+        <span class="chip">✅ Analytics & Reports</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BANNER -->
+  <section class="stats-banner" id="stats">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-num" data-target="10">0</div>
+        <div class="stat-desc">Modules</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="7">0</div>
+        <div class="stat-desc">User Roles</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="100">0</div>
+        <div class="stat-desc">API Endpoints</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="99">0</div>
+        <div class="stat-desc">% Uptime</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-inner">
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title">Everything You Need to Run a Warehouse</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h3>Inventory Management</h3>
+          <p>Track stock levels in real time across all warehouses with low-stock alerts and reorder triggers.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏢</div>
+          <h3>Warehouse Structure</h3>
+          <p>Organize your physical space into warehouses, zones, racks and shelves with capacity tracking.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Stock Movements</h3>
+          <p>Log every inbound, outbound and transfer movement with full audit trail and history.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <h3>Analytics & Reports</h3>
+          <p>Visual dashboards and exportable reports for occupancy, stock value and movement trends.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <h3>Approvals Workflow</h3>
+          <p>Approve or reject inventory adjustments and stock transfers with role-based controls.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3>Notifications</h3>
+          <p>Get instant alerts for low stock, pending approvals and critical warehouse events.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROLES -->
+  <section class="roles" id="roles">
+    <div class="section-inner">
+      <div class="section-label">Access Control</div>
+      <h2 class="section-title">Built for Every Role in Your Team</h2>
+      <div class="roles-grid">
+        <div class="role-card">
+          <div class="role-icon">👑</div>
+          <div class="role-name">Admin</div>
+          <div class="role-desc">Full system access — manage users, warehouses and all settings.</div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🏢</div>
+          <div class="role-name">Manager</div>
+          <div class="role-desc">Oversee warehouse operations, approve requests and generate reports.</div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">👷</div>
+          <div class="role-name">Supervisor</div>
+          <div class="role-desc">Supervise staff, manage stock movements and monitor zone capacity.</div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🧑‍💼</div>
+          <div class="role-name">Staff</div>
+          <div class="role-desc">Record stock movements and view assigned inventory items.</div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">📦</div>
+          <div class="role-name">Warehouse Staff</div>
+          <div class="role-desc">Handle physical goods, update shelf occupancy and log transfers.</div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">👁️</div>
+          <div class="role-name">Viewer</div>
+          <div class="role-desc">Read-only access to dashboards, reports and inventory data.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-glow"></div>
+    <div class="cta-inner">
+      <h2>Ready to Optimize Your Warehouse?</h2>
+      <p>Join your team on WMS and take control of your entire warehouse operation today.</p>
+      <div class="cta-actions">
+        <a href="register.html" class="btn btn-primary btn-lg">Create Your Account</a>
+        <a href="login.html"    class="btn btn-outline btn-lg">Sign In</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <div class="nav-logo-icon">🏭</div>
+        <span>WMS Portal</span>
+      </div>
+      <div class="footer-links">
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+        <a href="#features">Features</a>
+      </div>
+      <div class="footer-copy">© 2026 Warehouse Management System. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="../js/landing.js"></script>
+</body>
+</html>

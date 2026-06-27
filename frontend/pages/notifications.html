@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications — WMS</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/notifications.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏭</div>
+      <span>WMS<small>Warehouse System</small></span>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html"       class="nav-link"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="notifications.html"   class="nav-link active"><span class="nav-icon">🔔</span> Notifications</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Inventory</div>
+      <a href="inventory.html"       class="nav-link"><span class="nav-icon">📦</span> Inventory</a>
+      <a href="stock-movements.html" class="nav-link"><span class="nav-icon">🔄</span> Stock Movements</a>
+      <a href="products.html"        class="nav-link"><span class="nav-icon">🛒</span> Products</a>
+      <a href="categories.html"      class="nav-link"><span class="nav-icon">🏷️</span> Categories</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Warehouse</div>
+      <a href="warehouses.html"      class="nav-link"><span class="nav-icon">🏢</span> Warehouses</a>
+      <a href="zones.html"           class="nav-link"><span class="nav-icon">🗺️</span> Zones</a>
+      <a href="racks.html"           class="nav-link"><span class="nav-icon">🗄️</span> Racks</a>
+      <a href="shelves.html"         class="nav-link"><span class="nav-icon">📚</span> Shelves</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Insights</div>
+      <a href="reports.html"         class="nav-link"><span class="nav-icon">📋</span> Reports</a>
+      <a href="analytics.html"       class="nav-link"><span class="nav-icon">📈</span> Analytics</a>
+      <a href="approvals.html"       class="nav-link"><span class="nav-icon">✅</span> Approvals</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Admin</div>
+      <a href="users.html"           class="nav-link"><span class="nav-icon">👥</span> Users</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role"></div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">🚪 Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-area">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Notifications</div>
+        <div class="topbar-sub">Your alerts and system messages</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-ghost" id="btn-mark-all">✓ Mark All Read</button>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Tabs -->
+      <div class="tabs mb-4">
+        <button class="tab active" data-tab="all">All</button>
+        <button class="tab" data-tab="unread">Unread</button>
+        <button class="tab" data-tab="alerts">Alerts</button>
+      </div>
+
+      <!-- Notifications list -->
+      <div class="notif-list" id="notif-list">
+        <div class="text-center text-muted" style="padding:48px">Loading…</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="../js/api.js"></script>
+<script src="../js/notifications.js"></script>
+</body>
+</html>

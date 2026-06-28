@@ -6,9 +6,9 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:           #0a0f1a;
-  --bg-card:      #0f1729;
-  --bg-hover:     #131e35;
+  --bg:           #0a1628;
+  --bg-card:      #0f1f40;
+  --bg-hover:     #162448;
   --border:       rgba(6, 182, 212, 0.15);
   --border-hover: rgba(6, 182, 212, 0.35);
 
@@ -56,7 +56,7 @@ img { display: block; max-width: 100%; }
 /* ── Sidebar ──────────────────────────────────────────────── */
 .sidebar {
   width: var(--sidebar-w);
-  background: #080e1c;
+  background: #07122e;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -354,7 +354,7 @@ td.bold { color: var(--text); font-weight: 500; }
 .form-control:focus  { border-color: var(--cyan); }
 .form-control::placeholder { color: var(--text-muted); }
 
-select.form-control option { background: #0f1729; }
+select.form-control option { background: #0f1f40; }
 
 /* ── Modal ────────────────────────────────────────────────── */
 .modal-overlay {
@@ -556,3 +556,54 @@ select.form-control option { background: #0f1729; }
 [data-theme="light"] .btn-secondary:hover { background: #cbd5e1; }
 [data-theme="light"] .sidebar-theme-btn { border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); }
 [data-theme="light"] .sidebar-theme-btn:hover { background: rgba(255,255,255,0.1); color: #22d3ee; }
+
+/* ── Smooth theme transition ─────────────────────────────── */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease, box-shadow 0.25s ease !important;
+}
+
+
+/* ── Topbar theme toggle button ───────────────────────────── */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.topbar-theme-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--cyan);
+  background: var(--bg-hover);
+}
+.topbar-theme-btn .toggle-icon { font-size: 14px; transition: transform 0.4s; }
+.topbar-theme-btn:hover .toggle-icon { transform: rotate(20deg); }
+
+[data-theme="light"] .topbar-theme-btn {
+  background: #f8fafc;
+  border-color: rgba(6,182,212,0.2);
+  color: #64748b;
+}
+[data-theme="light"] .topbar-theme-btn:hover {
+  background: #e0f2fe;
+  border-color: rgba(6,182,212,0.5);
+  color: #0891b2;
+}

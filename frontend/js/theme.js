@@ -13,6 +13,10 @@
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(STORAGE_KEY, theme);
 
+    // Smooth transition class
+    document.documentElement.classList.add('theme-transitioning');
+    setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 300);
+
     // Update all toggle buttons on the page
     document.querySelectorAll('.toggle-icon').forEach(el => {
       el.textContent = theme === 'dark' ? '☀️' : '🌙';
@@ -27,7 +31,7 @@
     applyTheme(current === 'dark' ? 'light' : 'dark');
   }
 
-  // Apply saved theme immediately (before paint)
+  // Apply saved theme immediately (before paint) to avoid flash
   applyTheme(getTheme());
 
   // Expose globally
@@ -35,7 +39,7 @@
   window.applyTheme  = applyTheme;
   window.getTheme    = getTheme;
 
-  // Re-apply after DOM loads (updates icons)
+  // Re-apply after DOM loads (updates icons/labels in case DOM wasn't ready)
   document.addEventListener('DOMContentLoaded', () => {
     applyTheme(getTheme());
   });

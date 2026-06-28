@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms &amp; Conditions — WMS Portal</title>
+  <link rel="stylesheet" href="../css/landing.css" />
+  <style>
+    .page-hero {
+      min-height: 30vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 40px;
+      position: relative; overflow: hidden;
+    }
+    .page-hero .hero-bg {
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(178,213,229,0.1) 0%, transparent 70%);
+    }
+    .updated-chip {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 16px;
+      border-radius: 99px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .legal-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    .legal-toc {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      margin-bottom: 48px;
+    }
+    .legal-toc h4 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--candy);
+      margin-bottom: 14px;
+    }
+    .legal-toc ol {
+      list-style: none;
+      counter-reset: toc;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 20px;
+    }
+    @media (max-width: 600px) { .legal-toc ol { grid-template-columns: 1fr; } }
+    .legal-toc li { counter-increment: toc; }
+    .legal-toc a {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .legal-toc a:before {
+      content: counter(toc) ". ";
+      color: var(--candy);
+      font-weight: 700;
+    }
+    .legal-toc a:hover { color: var(--text); }
+
+    .legal-section { margin-bottom: 40px; scroll-margin-top: 100px; }
+    .legal-section h2 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .legal-section h2 .num {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      display: grid; place-items: center;
+      font-size: 13px;
+      color: var(--candy);
+      flex-shrink: 0;
+    }
+    .legal-section p {
+      font-size: 14.5px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .legal-section ul {
+      margin: 0 0 12px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .legal-section ul li {
+      font-size: 14.5px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      padding-left: 22px;
+      position: relative;
+      margin-bottom: 6px;
+    }
+    .legal-section ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--candy);
+    }
+    .legal-section strong { color: var(--text); }
+
+    .legal-divider {
+      height: 1px;
+      background: var(--glass-border);
+      margin: 40px 0;
+    }
+
+    .legal-footer-note {
+      background: linear-gradient(135deg, rgba(178,213,229,0.1), rgba(178,213,229,0.03));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--candy);
+      color: #07101c;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(178,213,229,0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.2s;
+      z-index: 200;
+    }
+    .back-to-top.visible { opacity: 1; pointer-events: auto; }
+    .back-to-top:hover { transform: translateY(-3px); }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ─────────────────────────────────────────────── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">🏭 <span>WMS<small> Portal</small></span></div>
+      <div class="nav-links" id="nav-links">
+        <a href="landing.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="faq.html">FAQ</a>
+        <a href="careers.html">Careers</a>
+        <a href="login.html" class="nav-btn-outline">Sign In</a>
+        <a href="register.html" class="nav-btn-primary">Get Started</a>
+      </div>
+      <button class="burger" id="burger" onclick="toggleMenu()">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="landing.html" onclick="closeMenu()">Home</a>
+      <a href="services.html" onclick="closeMenu()">Services</a>
+      <a href="about.html" onclick="closeMenu()">About</a>
+      <a href="faq.html" onclick="closeMenu()">FAQ</a>
+      <a href="careers.html" onclick="closeMenu()">Careers</a>
+      <a href="login.html" onclick="closeMenu()">Sign In</a>
+      <a href="register.html" class="nav-btn-primary" style="text-align:center" onclick="closeMenu()">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="hero-bg" style="position:absolute; inset:0;"></div>
+    <div class="section-inner" style="position:relative; z-index:1;">
+      <div class="section-label" style="text-align:center">Legal</div>
+      <h2 class="section-title">Terms &amp; Conditions</h2>
+      <p class="section-sub" style="margin:0 auto">Please read these terms carefully before using the Warehouse Management System.</p>
+      <span class="updated-chip">Last updated: June 2026</span>
+    </div>
+  </section>
+
+  <!-- ── CONTENT ────────────────────────────────────────────── -->
+  <div class="legal-wrap">
+
+    <div class="legal-toc">
+      <h4>On this page</h4>
+      <ol>
+        <li><a href="#acceptance">Acceptance of Terms</a></li>
+        <li><a href="#accounts">User Accounts</a></li>
+        <li><a href="#use">Acceptable Use</a></li>
+        <li><a href="#data">Data &amp; Inventory Accuracy</a></li>
+        <li><a href="#roles">Roles &amp; Permissions</a></li>
+        <li><a href="#privacy">Privacy Policy</a></li>
+        <li><a href="#availability">Availability &amp; Liability</a></li>
+        <li><a href="#ip">Intellectual Property</a></li>
+        <li><a href="#termination">Termination</a></li>
+        <li><a href="#changes">Changes to These Terms</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ol>
+    </div>
+
+    <div class="legal-section" id="acceptance">
+      <h2><span class="num">1</span>Acceptance of Terms</h2>
+      <p>By creating an account, signing in, or otherwise using the Warehouse Management System ("WMS", "the System", "we", "us"), you agree to be bound by these Terms &amp; Conditions. If you do not agree with any part of these terms, you must not access or use the System.</p>
+      <p>These terms apply to all users of WMS, including <strong>Admins, Managers, Supervisors, Staff, Warehouse Staff, and Viewers</strong>.</p>
+    </div>
+
+    <div class="legal-section" id="accounts">
+      <h2><span class="num">2</span>User Accounts</h2>
+      <p>To access most features of WMS, you must register for an account. When creating an account, you agree to:</p>
+      <ul>
+        <li>Provide accurate, current, and complete information</li>
+        <li>Keep your username and password confidential</li>
+        <li>Notify your administrator immediately of any unauthorized use of your account</li>
+        <li>Accept responsibility for all activity that occurs under your account</li>
+      </ul>
+      <p>Accounts may be created, modified, or deactivated by an Admin at any time as part of normal warehouse access management.</p>
+    </div>
+
+    <div class="legal-section" id="use">
+      <h2><span class="num">3</span>Acceptable Use</h2>
+      <p>You agree to use WMS only for legitimate warehouse management purposes consistent with your assigned role. You must not:</p>
+      <ul>
+        <li>Attempt to bypass role-based access controls or access data outside your permission level</li>
+        <li>Upload or input false inventory, stock movement, or user data</li>
+        <li>Interfere with the proper functioning of the System, its APIs, or its database</li>
+        <li>Use the System to facilitate unlawful activity</li>
+      </ul>
+    </div>
+
+    <div class="legal-section" id="data">
+      <h2><span class="num">4</span>Data &amp; Inventory Accuracy</h2>
+      <p>WMS is a tool for recording and tracking warehouse data. While the System includes validation, approval workflows, and audit trails, the accuracy of inventory counts, stock movements, and reports ultimately depends on the data entered by users.</p>
+      <p>We are not responsible for business decisions made on the basis of inaccurate data entered by users or third parties.</p>
+    </div>
+
+    <div class="legal-section" id="roles">
+      <h2><span class="num">5</span>Roles &amp; Permissions</h2>
+      <p>WMS enforces role-based access control. Each role is granted a defined scope of access:</p>
+      <ul>
+        <li><strong>Admin</strong> — full system access, including user and warehouse management</li>
+        <li><strong>Manager</strong> — operational oversight, approvals, and reporting</li>
+        <li><strong>Supervisor</strong> — staff and stock movement supervision</li>
+        <li><strong>Staff / Warehouse Staff</strong> — recording stock movements and handling assigned inventory</li>
+        <li><strong>Viewer</strong> — read-only access to dashboards and reports</li>
+      </ul>
+      <p>You agree not to attempt to escalate your own permissions or access another user's role-restricted data.</p>
+    </div>
+
+    <div class="legal-section" id="privacy">
+      <h2><span class="num">6</span>Privacy Policy</h2>
+      <p>We collect account information (name, username, email, role) and operational data you enter (inventory, stock movements, reports) solely to operate the System. Data is stored in our PostgreSQL database and protected using JWT-based authentication and encrypted connections.</p>
+      <p>We do not sell or share your personal data with third parties, except where required to operate core System infrastructure (such as hosting and database providers) or where required by law.</p>
+    </div>
+
+    <div class="legal-section" id="availability">
+      <h2><span class="num">7</span>Availability &amp; Liability</h2>
+      <p>WMS is provided "as is" and "as available." While we aim for high uptime, we do not guarantee uninterrupted or error-free operation. We are not liable for any indirect, incidental, or consequential damages arising from your use of, or inability to use, the System.</p>
+    </div>
+
+    <div class="legal-section" id="ip">
+      <h2><span class="num">8</span>Intellectual Property</h2>
+      <p>All source code, design, branding, and documentation associated with WMS remain the property of the project team. You may not copy, redistribute, or repurpose the System outside of its intended use without permission.</p>
+    </div>
+
+    <div class="legal-section" id="termination">
+      <h2><span class="num">9</span>Termination</h2>
+      <p>We reserve the right to suspend or terminate any account that violates these Terms, misuses the System, or poses a risk to data integrity or security, with or without prior notice.</p>
+    </div>
+
+    <div class="legal-section" id="changes">
+      <h2><span class="num">10</span>Changes to These Terms</h2>
+      <p>We may update these Terms &amp; Conditions from time to time. Continued use of WMS after changes are posted constitutes acceptance of the revised terms. Significant changes will be reflected by an updated "Last updated" date above.</p>
+    </div>
+
+    <div class="legal-section" id="contact">
+      <h2><span class="num">11</span>Contact</h2>
+      <p>If you have questions about these Terms, please reach out to the WMS project team via the <a href="about.html" style="color:var(--candy)">About page</a>, or check our <a href="faq.html" style="color:var(--candy)">FAQ</a> for common questions.</p>
+    </div>
+
+    <div class="legal-divider"></div>
+
+    <div class="legal-footer-note">
+      📌 By signing in or creating an account, you confirm that you have read, understood, and agree to these Terms &amp; Conditions in full.
+    </div>
+
+  </div>
+
+  <a href="#" class="back-to-top" id="back-to-top">↑</a>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">🏭 WMS Portal</div>
+        <p class="footer-tagline">A complete warehouse management platform for modern operations teams.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform</div>
+        <a href="services.html">Services</a>
+        <a href="login.html">Sign In</a>
+        <a href="register.html">Register</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Company</div>
+        <a href="about.html">About</a>
+        <a href="careers.html">Careers</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Legal</div>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="terms.html#privacy">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 WMS Portal. All rights reserved.</div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+      document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+    });
+    function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+    function closeMenu()  { document.getElementById('mobile-menu').classList.remove('open'); }
+  </script>
+
+</body>
+</html>

@@ -208,6 +208,144 @@
     }
     .back-home-btn svg { flex-shrink: 0; }
   </style>
+  <style>
+    /* ── Terms & Conditions modal ─────────────────────────────── */
+    .terms-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 9, 18, 0.72);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .terms-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .terms-modal {
+      width: 100%;
+      max-width: 520px;
+      max-height: 84vh;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(16px) scale(0.98);
+      transition: transform 0.25s ease;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+    .terms-overlay.visible .terms-modal { transform: translateY(0) scale(1); }
+
+    .terms-modal-header {
+      padding: 22px 26px 16px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .terms-modal-header h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .terms-modal-header p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .terms-modal-body {
+      padding: 18px 26px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .terms-modal-body h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--cyan);
+      margin: 16px 0 6px;
+    }
+    .terms-modal-body h4:first-child { margin-top: 0; }
+    .terms-modal-body p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+    .terms-modal-body a { color: var(--cyan); }
+    .terms-modal-body a:hover { text-decoration: underline; }
+
+    .terms-modal-footer {
+      padding: 16px 26px 22px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .terms-agree-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .terms-agree-row input {
+      margin-top: 2px;
+      width: 16px; height: 16px;
+      accent-color: var(--cyan);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .terms-agree-row a { color: var(--cyan); }
+
+    .terms-modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-terms-decline {
+      flex: 1;
+      padding: 11px;
+      font-size: 13.5px;
+      font-weight: 600;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-terms-decline:hover { color: var(--text); border-color: var(--border-hover); }
+
+    .btn-terms-accept {
+      flex: 1.4;
+      padding: 11px;
+      font-size: 13.5px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      color: #000;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-terms-accept:hover:not(:disabled) { opacity: 0.88; }
+    .btn-terms-accept:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .login-card.locked {
+      opacity: 0.35;
+      filter: blur(1px);
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
   <link rel="stylesheet" href="../css/theme.css" />
 </head>
 <body>
@@ -232,7 +370,7 @@
     </div>
 
     <!-- Card -->
-    <div class="login-card">
+    <div class="login-card" id="login-card">
       <h2>Welcome back</h2>
       <p class="sub">Sign in to your account to continue</p>
 
@@ -282,6 +420,43 @@
   <!-- Toast -->
   <div id="toast-container"></div>
 
+  <!-- ── Terms & Conditions Modal ─────────────────────────────── -->
+  <div class="terms-overlay" id="terms-overlay">
+    <div class="terms-modal">
+      <div class="terms-modal-header">
+        <h3>🏭 Terms &amp; Conditions</h3>
+        <p>Please review and accept before signing in to WMS Portal.</p>
+      </div>
+      <div class="terms-modal-body">
+        <h4>1. Acceptance of Terms</h4>
+        <p>By signing in, you agree to use WMS only for legitimate warehouse management purposes consistent with your assigned role.</p>
+
+        <h4>2. Account Responsibility</h4>
+        <p>You are responsible for keeping your username and password confidential and for all activity that occurs under your account.</p>
+
+        <h4>3. Data Accuracy</h4>
+        <p>Inventory, stock movement, and report accuracy depends on the data you enter. We are not responsible for decisions made on inaccurate data.</p>
+
+        <h4>4. Privacy</h4>
+        <p>Your account and operational data are protected using JWT-based authentication and encrypted connections, and are never sold to third parties.</p>
+
+        <p style="margin-top:14px">
+          Read the full <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a> for complete details, or check our <a href="faq.html" target="_blank" rel="noopener">FAQ</a> for common questions.
+        </p>
+      </div>
+      <div class="terms-modal-footer">
+        <label class="terms-agree-row">
+          <input type="checkbox" id="terms-checkbox" />
+          <span>I have read and agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>.</span>
+        </label>
+        <div class="terms-modal-actions">
+          <button class="btn-terms-decline" id="btn-terms-decline" type="button">Decline</button>
+          <button class="btn-terms-accept" id="btn-terms-accept" type="button" disabled>Accept &amp; Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <script src="../js/theme.js"></script>
   <script src="../js/api.js"></script>
   <script>
@@ -289,6 +464,49 @@
     if (localStorage.getItem('access')) {
       window.location.href = 'dashboard.html';
     }
+
+    // ── Terms & Conditions gate ─────────────────────────────
+    // Shown every time the login page loads (per session) until accepted.
+    const TERMS_KEY        = 'wms_terms_accepted';
+    const loginCardEl      = document.getElementById('login-card');
+    const termsOverlayEl   = document.getElementById('terms-overlay');
+    const termsCheckboxEl  = document.getElementById('terms-checkbox');
+    const btnTermsAccept   = document.getElementById('btn-terms-accept');
+    const btnTermsDecline  = document.getElementById('btn-terms-decline');
+
+    function hasAcceptedTerms() {
+      return sessionStorage.getItem(TERMS_KEY) === 'true';
+    }
+
+    function showTermsModal() {
+      loginCardEl.classList.add('locked');
+      termsOverlayEl.classList.add('visible');
+    }
+
+    function hideTermsModal() {
+      loginCardEl.classList.remove('locked');
+      termsOverlayEl.classList.remove('visible');
+    }
+
+    if (!hasAcceptedTerms()) {
+      showTermsModal();
+    }
+
+    termsCheckboxEl.addEventListener('change', () => {
+      btnTermsAccept.disabled = !termsCheckboxEl.checked;
+    });
+
+    btnTermsAccept.addEventListener('click', () => {
+      if (!termsCheckboxEl.checked) return;
+      sessionStorage.setItem(TERMS_KEY, 'true');
+      hideTermsModal();
+      usernameEl.focus();
+    });
+
+    btnTermsDecline.addEventListener('click', () => {
+      // Without accepting the terms, the user can't use WMS — send them home.
+      window.location.href = 'landing.html';
+    });
 
     const usernameEl = document.getElementById('username');
     const passwordEl = document.getElementById('password');
@@ -311,6 +529,11 @@
 
     // ── Login handler ───────────────────────────────────────
     async function handleLogin() {
+      if (!hasAcceptedTerms()) {
+        showTermsModal();
+        return;
+      }
+
       const username = usernameEl.value.trim();
       const password = passwordEl.value;
 
@@ -354,8 +577,8 @@
       });
     });
 
-    // Focus username on load
-    usernameEl.focus();
+    // Focus username on load (skip if the terms modal is currently blocking the form)
+    if (hasAcceptedTerms()) usernameEl.focus();
   </script>
 
 </body>

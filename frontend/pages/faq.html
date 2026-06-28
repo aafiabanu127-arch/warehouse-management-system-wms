@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — WMS Portal</title>
+  <link rel="stylesheet" href="../css/landing.css" />
+  <style>
+    .page-hero {
+      min-height: 36vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 50px;
+      position: relative; overflow: hidden;
+    }
+    .page-hero .hero-bg {
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(178,213,229,0.1) 0%, transparent 70%);
+    }
+
+    /* ── FAQ search ──────────────────────────────────────────── */
+    .faq-search-wrap {
+      max-width: 560px;
+      margin: 0 auto 8px;
+      position: relative;
+    }
+    .faq-search-wrap input {
+      width: 100%;
+      padding: 14px 18px 14px 44px;
+      border-radius: 99px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      backdrop-filter: blur(16px);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .faq-search-wrap input:focus { border-color: var(--candy); background: var(--glass-hover); }
+    .faq-search-wrap input::placeholder { color: var(--text-muted); }
+    .faq-search-icon {
+      position: absolute;
+      left: 17px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* ── Category pills ──────────────────────────────────────── */
+    .faq-cats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 28px 0 8px;
+    }
+    .faq-cat-btn {
+      padding: 8px 18px;
+      border-radius: 99px;
+      border: 1px solid var(--glass-border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .faq-cat-btn:hover { border-color: var(--candy); color: var(--text); }
+    .faq-cat-btn.active {
+      background: var(--candy);
+      border-color: var(--candy);
+      color: #07101c;
+    }
+
+    /* ── Accordion ───────────────────────────────────────────── */
+    .faq-list {
+      max-width: 760px;
+      margin: 40px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-item {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .faq-item:hover { border-color: var(--glass-hover); }
+    .faq-item.open { border-color: var(--candy); }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .faq-question .q-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .faq-question .q-icon {
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--glass-border);
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      color: var(--candy);
+      transition: transform 0.25s ease;
+    }
+    .faq-item.open .faq-question .q-icon { transform: rotate(45deg); background: var(--candy); color: #07101c; }
+
+    .faq-answer-wrap {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .faq-item.open .faq-answer-wrap { max-height: 600px; }
+    .faq-answer {
+      padding: 0 22px 20px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .faq-empty {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      padding: 40px 0;
+      display: none;
+    }
+
+    /* ── Still have questions CTA ────────────────────────────── */
+    .faq-cta {
+      max-width: 760px;
+      margin: 56px auto 0;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(178,213,229,0.1), rgba(178,213,229,0.03));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 36px 28px;
+    }
+    .faq-cta h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .faq-cta p { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ─────────────────────────────────────────────── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">🏭 <span>WMS<small> Portal</small></span></div>
+      <div class="nav-links" id="nav-links">
+        <a href="landing.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="faq.html">FAQ</a>
+        <a href="careers.html">Careers</a>
+        <a href="login.html" class="nav-btn-outline">Sign In</a>
+        <a href="register.html" class="nav-btn-primary">Get Started</a>
+      </div>
+      <button class="burger" id="burger" onclick="toggleMenu()">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="landing.html" onclick="closeMenu()">Home</a>
+      <a href="services.html" onclick="closeMenu()">Services</a>
+      <a href="about.html" onclick="closeMenu()">About</a>
+      <a href="faq.html" onclick="closeMenu()">FAQ</a>
+      <a href="careers.html" onclick="closeMenu()">Careers</a>
+      <a href="login.html" onclick="closeMenu()">Sign In</a>
+      <a href="register.html" class="nav-btn-primary" style="text-align:center" onclick="closeMenu()">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="hero-bg" style="position:absolute; inset:0;"></div>
+    <div class="section-inner" style="position:relative; z-index:1;">
+      <div class="section-label" style="text-align:center">Help Center</div>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-sub" style="margin:0 auto 32px">Everything you need to know about using the Warehouse Management System.</p>
+
+      <div class="faq-search-wrap">
+        <span class="faq-search-icon">🔍</span>
+        <input type="text" id="faq-search" placeholder="Search for a question…" />
+      </div>
+
+      <div class="faq-cats" id="faq-cats">
+        <button class="faq-cat-btn active" data-cat="all">All</button>
+        <button class="faq-cat-btn" data-cat="general">General</button>
+        <button class="faq-cat-btn" data-cat="account">Account &amp; Access</button>
+        <button class="faq-cat-btn" data-cat="inventory">Inventory &amp; Stock</button>
+        <button class="faq-cat-btn" data-cat="reports">Reports &amp; Data</button>
+        <button class="faq-cat-btn" data-cat="security">Security</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ LIST ───────────────────────────────────────────── -->
+  <section class="section" style="padding-top:0;">
+    <div class="faq-list" id="faq-list">
+
+      <div class="faq-item" data-cat="general">
+        <div class="faq-question">
+          <span class="q-text">What is the Warehouse Management System (WMS)?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          WMS is a full-stack platform for managing warehouse operations — inventory, zones, racks, shelves, stock movements, approvals, and analytics — all from one dashboard, with role-based access for different teams.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="general">
+        <div class="faq-question">
+          <span class="q-text">Do I need to install anything to use WMS?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          No installation is required. WMS runs entirely in your browser — just sign in with your account and you're ready to go on desktop or mobile.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="account">
+        <div class="faq-question">
+          <span class="q-text">How do I create an account?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          Click <strong>"Get Started"</strong> or <strong>"Create one"</strong> on the login page, fill in your name, username, email, and password, choose a role, and submit. You'll be redirected to sign in once your account is created.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="account">
+        <div class="faq-question">
+          <span class="q-text">I forgot my password. What should I do?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          Contact your warehouse administrator to have your password reset. Admins can reset credentials for any user from the Users management screen.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="account">
+        <div class="faq-question">
+          <span class="q-text">What are the different user roles in WMS?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          WMS supports seven roles: <strong>Admin, Manager, Supervisor, Staff, Warehouse Staff, Viewer</strong>, each with different levels of access — from full system control to read-only dashboards.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="inventory">
+        <div class="faq-question">
+          <span class="q-text">How do I add or update inventory items?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          Go to the <strong>Inventory</strong> page from your dashboard sidebar, then use "Add Item" to create a new product or click an existing item to edit quantities, location, and details — subject to your role's permissions.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="inventory">
+        <div class="faq-question">
+          <span class="q-text">How are warehouses, zones, racks, and shelves organized?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          WMS uses a hierarchy: a <strong>Warehouse</strong> contains <strong>Zones</strong>, each Zone contains <strong>Racks</strong>, and each Rack contains <strong>Shelves</strong>. This structure lets you track exact storage locations and capacity at every level.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="inventory">
+        <div class="faq-question">
+          <span class="q-text">How do stock movement approvals work?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          Inventory adjustments and transfers submitted by Staff are routed to the <strong>Approvals</strong> queue, where Managers or Supervisors can approve or reject them before the stock levels are finalized.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="reports">
+        <div class="faq-question">
+          <span class="q-text">Can I export reports?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          Yes. The <strong>Reports</strong> page lets you export inventory, stock movement, and analytics data as PDF, CSV, or Excel files for offline review or sharing.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="reports">
+        <div class="faq-question">
+          <span class="q-text">Does WMS support demand forecasting?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          Yes — WMS includes an AI-powered demand forecasting module that uses historical stock movement data to predict future demand and suggest restock quantities per product.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="security">
+        <div class="faq-question">
+          <span class="q-text">Is my data secure?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          WMS uses JWT-based authentication, role-based access control, and encrypted connections to protect your data. Only authorized users can access information relevant to their role.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="security">
+        <div class="faq-question">
+          <span class="q-text">Where can I review the Terms &amp; Conditions?</span>
+          <span class="q-icon">+</span>
+        </div>
+        <div class="faq-answer-wrap"><div class="faq-answer">
+          You can read the full Terms &amp; Conditions any time on our <a href="terms.html" style="color:var(--candy)">Terms &amp; Conditions page</a>. You'll also be asked to review and accept them before signing in.
+        </div></div>
+      </div>
+
+    </div>
+
+    <p class="faq-empty" id="faq-empty">No matching questions found. Try a different search term.</p>
+
+    <div class="faq-cta">
+      <h3>Still have questions?</h3>
+      <p>Can't find what you're looking for? Reach out and our team will help.</p>
+      <a href="about.html" class="btn-primary-lg">Contact the Team</a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">🏭 WMS Portal</div>
+        <p class="footer-tagline">A complete warehouse management platform for modern operations teams.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform</div>
+        <a href="services.html">Services</a>
+        <a href="login.html">Sign In</a>
+        <a href="register.html">Register</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Company</div>
+        <a href="about.html">About</a>
+        <a href="careers.html">Careers</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Legal</div>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="terms.html#privacy">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 WMS Portal. All rights reserved.</div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+    });
+    function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+    function closeMenu()  { document.getElementById('mobile-menu').classList.remove('open'); }
+
+    // ── Accordion toggle ──────────────────────────────────────
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.closest('.faq-item');
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+
+    // ── Category filter ───────────────────────────────────────
+    const catBtns  = document.querySelectorAll('.faq-cat-btn');
+    const items    = document.querySelectorAll('.faq-item');
+    const searchEl = document.getElementById('faq-search');
+    const emptyMsg = document.getElementById('faq-empty');
+    let activeCat  = 'all';
+
+    function applyFilters() {
+      const term = searchEl.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const matchesCat = activeCat === 'all' || item.dataset.cat === activeCat;
+        const text = item.textContent.toLowerCase();
+        const matchesTerm = !term || text.includes(term);
+        const show = matchesCat && matchesTerm;
+        item.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+
+      emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    catBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        catBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = btn.dataset.cat;
+        applyFilters();
+      });
+    });
+
+    searchEl.addEventListener('input', applyFilters);
+  </script>
+
+</body>
+</html>

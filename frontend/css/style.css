@@ -554,9 +554,6 @@ select.form-control option { background: #0f1f40; }
 [data-theme="light"] .section-label     { color: #64748b; }
 [data-theme="light"] .btn-secondary     { background: #e2e8f0; color: #0f172a; border-color: #cbd5e1; }
 [data-theme="light"] .btn-secondary:hover { background: #cbd5e1; }
-[data-theme="light"] .sidebar-theme-btn { border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); }
-[data-theme="light"] .sidebar-theme-btn:hover { background: rgba(255,255,255,0.1); color: #22d3ee; }
-
 /* ── Smooth theme transition ─────────────────────────────── */
 .theme-transitioning,
 .theme-transitioning *,
